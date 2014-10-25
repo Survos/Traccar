@@ -83,6 +83,10 @@ public class TraccarActivity extends PreferenceActivity {
             } else if (key.equals(KEY_ID)) {
                 findPreference(KEY_ID).setSummary(sharedPreferences.getString(KEY_ID, null));
             }
+            else if(key.equals(KEY_ADDRESS)){
+                findPreference(KEY_ADDRESS).setSummary(sharedPreferences.getString(KEY_ADDRESS, null));
+
+            }
         }
     };
 
@@ -131,6 +135,8 @@ public class TraccarActivity extends PreferenceActivity {
 
         findPreference(KEY_ID).setSummary(sharedPreferences.getString(KEY_ID, id));
         findPreference(KEY_ADDRESS).setSummary(sharedPreferences.getString(KEY_ADDRESS, serverAddress));
+//        findPreference(KEY_ADDRESS).setSummary(sharedPreferences.getString(KEY_ADDRESS, serverAddress));
+
 
     }
 
