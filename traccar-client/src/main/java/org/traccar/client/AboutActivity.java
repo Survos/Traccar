@@ -20,7 +20,6 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Bundle;
 import android.widget.TextView;
 
-import org.chat.client.R;
 
 public class AboutActivity extends Activity {
 

@@ -29,7 +29,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 
-import org.chat.client.R;
 
 public class StatusActivity extends ListActivity {
 

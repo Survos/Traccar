@@ -29,7 +29,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
-import org.chat.client.R;
 
 /**
  * Main user interface
@@ -51,8 +50,9 @@ public class TraccarActivity extends PreferenceActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.preferences);
-        initPreferences();
         SharedPreferences sharedPreferences = getPreferenceScreen().getSharedPreferences();
+
+        initPreferences();
         if (sharedPreferences.getBoolean(KEY_STATUS, false))
             startService(new Intent(this, TraccarService.class));
     }
@@ -125,6 +125,11 @@ public class TraccarActivity extends PreferenceActivity {
 
         if (!sharedPreferences.contains(KEY_ID)) {
             sharedPreferences.edit().putString(KEY_ID, id).commit();
+        }
+
+        //String ad
+        if (!sharedPreferences.contains(KEY_ADDRESS)) {
+            sharedPreferences.edit().putString(KEY_ADDRESS, id).commit();
         }
         findPreference(KEY_ID).setSummary(sharedPreferences.getString(KEY_ID, id));
     }
