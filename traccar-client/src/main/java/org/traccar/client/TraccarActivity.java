@@ -127,11 +127,11 @@ public class TraccarActivity extends PreferenceActivity {
             sharedPreferences.edit().putString(KEY_ID, id).commit();
         }
 
-        //String ad
-        if (!sharedPreferences.contains(KEY_ADDRESS)) {
-            sharedPreferences.edit().putString(KEY_ADDRESS, id).commit();
-        }
+        String serverAddress =  sharedPreferences.getString(KEY_ADDRESS,getResources().getString(R.string.settings_address_summary));
+
         findPreference(KEY_ID).setSummary(sharedPreferences.getString(KEY_ID, id));
+        findPreference(KEY_ADDRESS).setSummary(sharedPreferences.getString(KEY_ADDRESS, serverAddress));
+
     }
 
 }
