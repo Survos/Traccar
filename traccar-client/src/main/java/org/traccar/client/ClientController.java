@@ -26,6 +26,8 @@ import android.net.ConnectivityManager;
 import android.os.Handler;
 import android.util.Log;
 
+import org.chat.client.R;
+
 
 public class ClientController implements Connection.ConnectionHandler {
 
