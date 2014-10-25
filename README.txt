@@ -1,13 +1,18 @@
-    traccar-client
+survey-tracker, based on traccar-client
 
-Web page - http://www.traccar.org
+Web page - http://www.traccar.org and www.survos.com
 
+Author - Tac Tacelosky (tac@survos.com)
 Author - Anton Tananaev (anton.tananaev@gmail.com)
 
 SUMMARY:
 
-Traccar Client is Android GPS tracking application. In can work with
-Traccar open source server software.
+Survos Tracker is a repackaged version of the Traccar Client is Android GPS tracking application.
+It has the following difference:
+
+* Additional fields are sent to the server, including gps precision, location provider and local time.
+* Eventually those fields will be sent as JSON and queued in SQLite if they aren't received.
+* Better error messages when a connection hasn't been established.
 
 LICENSE:
 
