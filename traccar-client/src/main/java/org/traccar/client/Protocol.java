@@ -19,8 +19,10 @@ import java.util.Calendar;
 import java.util.Formatter;
 import java.util.Locale;
 import java.util.TimeZone;
+import java.util.logging.Logger;
 
 import android.location.Location;
+import android.util.Log;
 
 /**
  * Protocol formatting
@@ -58,6 +60,11 @@ public class Protocol {
         if (extended) {
 
             f.format("%1$tY%1$tm%1$td%1$tH%1$tM%1$tS.%1$tL,A,", calendar);
+
+            //TODO add to the format
+            Log.d("provider",l.getProvider());
+            Log.d("accuracy",l.getAccuracy()+"");
+
 
             f.format("%.6f,%.6f,", l.getLatitude(), l.getLongitude());
             f.format("%.2f,%.2f,", l.getSpeed() * 1.943844, l.getBearing());

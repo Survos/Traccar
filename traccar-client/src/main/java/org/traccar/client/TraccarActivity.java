@@ -15,6 +15,8 @@
  */
 package org.traccar.client;
 
+import android.accounts.Account;
+import android.accounts.AccountManager;
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningServiceInfo;
 import android.content.Context;
@@ -25,9 +27,12 @@ import android.os.Bundle;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
 import android.telephony.TelephonyManager;
+import android.util.Patterns;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+
+import java.util.regex.Pattern;
 
 
 /**
@@ -122,8 +127,10 @@ public class TraccarActivity extends PreferenceActivity {
     private void initPreferences() {
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
 
-        TelephonyManager telephonyManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
-        String id = telephonyManager.getDeviceId();
+//        TelephonyManager telephonyManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
+//        String id = telephonyManager.getDeviceId();
+
+        String id = getPrimaryEmailAccount();
 
         SharedPreferences sharedPreferences = getPreferenceScreen().getSharedPreferences();
 
@@ -135,9 +142,20 @@ public class TraccarActivity extends PreferenceActivity {
 
         findPreference(KEY_ID).setSummary(sharedPreferences.getString(KEY_ID, id));
         findPreference(KEY_ADDRESS).setSummary(sharedPreferences.getString(KEY_ADDRESS, serverAddress));
-//        findPreference(KEY_ADDRESS).setSummary(sharedPreferences.getString(KEY_ADDRESS, serverAddress));
 
 
+    }
+
+    private String getPrimaryEmailAccount(){
+        Pattern emailPattern = Patterns.EMAIL_ADDRESS; // API level 8+
+        String possibleEmail = "";
+        Account[] accounts = AccountManager.get(this).getAccounts();
+        for (Account account : accounts) {
+            if (emailPattern.matcher(account.name).matches()) {
+                possibleEmail = account.name;
+            }
+        }
+        return possibleEmail;
     }
 
 }
