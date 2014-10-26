@@ -5,19 +5,25 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     
     <application android:label="@string/app_name" android:icon="@drawable/ic_launcher" android:allowBackup="true" android:theme="@style/TraccarTheme">
         
+<<<<<<< HEAD
         <activity android:name=".TraccarActivity">
+=======
+        <activity android:name="TraccarActivity">
+>>>>>>> 1b32b83fa12c01fbbd5400d56b91ac774de4b32e
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
+<<<<<<< HEAD
         <activity android:name=".StatusActivity">
         </activity>
 
@@ -27,6 +33,17 @@
         <service android:name=".TraccarService" />
         
         <receiver android:name=".AutostartReceiver">
+=======
+        <activity android:name="StatusActivity">
+        </activity>
+
+        <activity android:name="AboutActivity">
+        </activity>
+        
+        <service android:name="TraccarService" />
+        
+        <receiver android:name="AutostartReceiver">
+>>>>>>> 1b32b83fa12c01fbbd5400d56b91ac774de4b32e
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>

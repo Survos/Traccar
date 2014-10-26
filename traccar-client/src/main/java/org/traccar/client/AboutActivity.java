@@ -20,7 +20,10 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Bundle;
 import android.widget.TextView;
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 1b32b83fa12c01fbbd5400d56b91ac774de4b32e
 
 public class AboutActivity extends Activity {
 

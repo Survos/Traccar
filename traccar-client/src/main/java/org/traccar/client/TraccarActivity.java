@@ -15,6 +15,8 @@
  */
 package org.traccar.client;
 
+import android.accounts.Account;
+import android.accounts.AccountManager;
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningServiceInfo;
 import android.content.Context;
@@ -25,10 +27,16 @@ import android.os.Bundle;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
 import android.telephony.TelephonyManager;
+import android.util.Patterns;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
+<<<<<<< HEAD
+=======
+import java.util.regex.Pattern;
+
+>>>>>>> 1b32b83fa12c01fbbd5400d56b91ac774de4b32e
 
 /**
  * Main user interface
@@ -50,8 +58,9 @@ public class TraccarActivity extends PreferenceActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.preferences);
-        initPreferences();
         SharedPreferences sharedPreferences = getPreferenceScreen().getSharedPreferences();
+
+        initPreferences();
         if (sharedPreferences.getBoolean(KEY_STATUS, false))
             startService(new Intent(this, TraccarService.class));
     }
@@ -81,6 +90,10 @@ public class TraccarActivity extends PreferenceActivity {
                 }
             } else if (key.equals(KEY_ID)) {
                 findPreference(KEY_ID).setSummary(sharedPreferences.getString(KEY_ID, null));
+            }
+            else if(key.equals(KEY_ADDRESS)){
+                findPreference(KEY_ADDRESS).setSummary(sharedPreferences.getString(KEY_ADDRESS, null));
+
             }
         }
     };
@@ -117,15 +130,35 @@ public class TraccarActivity extends PreferenceActivity {
     private void initPreferences() {
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
 
-        TelephonyManager telephonyManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
-        String id = telephonyManager.getDeviceId();
+//        TelephonyManager telephonyManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
+//        String id = telephonyManager.getDeviceId();
+
+        String id = getPrimaryEmailAccount();
 
         SharedPreferences sharedPreferences = getPreferenceScreen().getSharedPreferences();
 
         if (!sharedPreferences.contains(KEY_ID)) {
             sharedPreferences.edit().putString(KEY_ID, id).commit();
         }
+
+        String serverAddress =  sharedPreferences.getString(KEY_ADDRESS,getResources().getString(R.string.settings_address_summary));
+
         findPreference(KEY_ID).setSummary(sharedPreferences.getString(KEY_ID, id));
+        findPreference(KEY_ADDRESS).setSummary(sharedPreferences.getString(KEY_ADDRESS, serverAddress));
+
+
+    }
+
+    private String getPrimaryEmailAccount(){
+        Pattern emailPattern = Patterns.EMAIL_ADDRESS; // API level 8+
+        String possibleEmail = "";
+        Account[] accounts = AccountManager.get(this).getAccounts();
+        for (Account account : accounts) {
+            if (emailPattern.matcher(account.name).matches()) {
+                possibleEmail = account.name;
+            }
+        }
+        return possibleEmail;
     }
 
 }
