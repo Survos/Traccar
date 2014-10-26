@@ -19,6 +19,7 @@ import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningServiceInfo;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -26,11 +27,15 @@ import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
-import android.telephony.TelephonyManager;
 import android.util.Patterns;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
+
+import com.edmodo.rangebar.RangeBar;
 
 import java.util.regex.Pattern;
 
@@ -39,7 +44,7 @@ import java.util.regex.Pattern;
  * Main user interface
  */
 @SuppressWarnings("deprecation")
-public class TraccarActivity extends PreferenceActivity {
+public class TraccarActivity extends PreferenceActivity implements View.OnClickListener {
 
     public static final String LOG_TAG = "traccar";
 
@@ -50,15 +55,28 @@ public class TraccarActivity extends PreferenceActivity {
     public static final String KEY_PROVIDER = "provider";
     public static final String KEY_EXTENDED = "extended";
     public static final String KEY_STATUS = "status";
+    public static final String KEY_RESTRICT_TIME = "time_restrict";
+    public static final String KEY_RESTRICT_START_TIME = "restrict_start_time";
+    public static final String KEY_RESTRICT_STOP_TIME = "restrict_stop_time";
+
+    /**
+     * holds the dialog for selecting time range
+     */
+    private Dialog  mSelectRestrictTimeDialog;
+
+    /**
+     * variable for holding sharedpreferences
+     */
+    private SharedPreferences mSharedPreferences;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.preferences);
-        SharedPreferences sharedPreferences = getPreferenceScreen().getSharedPreferences();
+        mSharedPreferences= getPreferenceScreen().getSharedPreferences();
 
         initPreferences();
-        if (sharedPreferences.getBoolean(KEY_STATUS, false))
+        if (mSharedPreferences.getBoolean(KEY_STATUS, false))
             startService(new Intent(this, TraccarService.class));
     }
 
@@ -87,13 +105,53 @@ public class TraccarActivity extends PreferenceActivity {
                 }
             } else if (key.equals(KEY_ID)) {
                 findPreference(KEY_ID).setSummary(sharedPreferences.getString(KEY_ID, null));
-            }
-            else if(key.equals(KEY_ADDRESS)){
+            } else if (key.equals(KEY_ADDRESS)) {
                 findPreference(KEY_ADDRESS).setSummary(sharedPreferences.getString(KEY_ADDRESS, null));
 
+            } else if (key.equals(KEY_RESTRICT_TIME)) {
+                if (!sharedPreferences.getBoolean(KEY_RESTRICT_TIME, false)) {
+
+                } else {
+                    openSelectRestrictTimeDialog();
+                }
             }
         }
     };
+
+    private void openSelectRestrictTimeDialog() {
+
+        // custom dialog
+        mSelectRestrictTimeDialog = new Dialog(this);
+        mSelectRestrictTimeDialog.setContentView(R.layout.layout_restrict_time_dialog);
+        mSelectRestrictTimeDialog.setTitle("Restrict Time");
+
+        final TextView timeDifferenceText = (TextView) mSelectRestrictTimeDialog.findViewById(R.id.time_difference);
+        final Button setButton = (Button) mSelectRestrictTimeDialog.findViewById(R.id.set_button);
+
+
+        //setting up range bar
+        RangeBar rangebar = (RangeBar) mSelectRestrictTimeDialog.findViewById(R.id.rangebar);
+        rangebar.setTickCount(24);
+        rangebar.setTickHeight(25);
+        rangebar.setBarWeight(6);
+        rangebar.setBarColor(229999999);
+
+        rangebar.setOnRangeBarChangeListener(new RangeBar.OnRangeBarChangeListener() {
+            @Override
+            public void onIndexChangeListener(RangeBar rangeBar, int leftThumbIndex, int rightThumbIndex) {
+                timeDifferenceText.setText(leftThumbIndex + " hours - " + rightThumbIndex + " hours");
+                mSharedPreferences.edit().putInt(KEY_RESTRICT_START_TIME, leftThumbIndex).commit();
+                mSharedPreferences.edit().putInt(KEY_RESTRICT_STOP_TIME, rightThumbIndex).commit();
+
+            }
+        });
+
+        setButton.setOnClickListener(this);
+
+
+        mSelectRestrictTimeDialog.show();
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -138,7 +196,7 @@ public class TraccarActivity extends PreferenceActivity {
             sharedPreferences.edit().putString(KEY_ID, id).commit();
         }
 
-        String serverAddress =  sharedPreferences.getString(KEY_ADDRESS,getResources().getString(R.string.settings_address_summary));
+        String serverAddress = sharedPreferences.getString(KEY_ADDRESS, getResources().getString(R.string.settings_address_summary));
 
         findPreference(KEY_ID).setSummary(sharedPreferences.getString(KEY_ID, id));
         findPreference(KEY_ADDRESS).setSummary(sharedPreferences.getString(KEY_ADDRESS, serverAddress));
@@ -146,7 +204,7 @@ public class TraccarActivity extends PreferenceActivity {
 
     }
 
-    private String getPrimaryEmailAccount(){
+    private String getPrimaryEmailAccount() {
         Pattern emailPattern = Patterns.EMAIL_ADDRESS; // API level 8+
         String possibleEmail = "";
         Account[] accounts = AccountManager.get(this).getAccounts();
@@ -158,4 +216,10 @@ public class TraccarActivity extends PreferenceActivity {
         return possibleEmail;
     }
 
+    @Override
+    public void onClick(View v) {
+        if (v.getId() == R.id.set_button) {
+            mSelectRestrictTimeDialog.dismiss();
+        }
+    }
 }

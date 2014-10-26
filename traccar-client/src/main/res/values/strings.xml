@@ -14,6 +14,7 @@
     <string name="settings_status_title">Service status</string>
     <string name="settings_status_off">Start</string>
     <string name="settings_status_on">Stop</string>
+    <string name="settings_restrict_by_time">Restrict by time</string>
     <string name="settings_status_off_summary">Service stopped</string>
     <string name="settings_status_on_summary">Service running</string>
     <string name="settings_extended_title">Survos format</string>
@@ -43,5 +44,8 @@
     <string name="status_location_update">Location update</string>
     <string name="status_preference_update">Preference update</string>
     <string name="status_connectivity_change">Connectivity change</string>
+
+    <string name="timedifference">0 hours - 24 hours</string>
+    <string name="set">Set</string>
 
 </resources>

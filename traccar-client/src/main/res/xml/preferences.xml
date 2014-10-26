@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <EditTextPreference
         android:key="id"
@@ -38,6 +38,11 @@
         android:key="extended"
         android:summary="@string/settings_extended_summary"
         android:title="@string/settings_extended_title" />
+
+    <CheckBoxPreference
+        android:defaultValue="false"
+        android:key="time_restrict"
+        android:title="@string/settings_restrict_by_time" />
 
     <CheckBoxPreference
         android:defaultValue="false"
