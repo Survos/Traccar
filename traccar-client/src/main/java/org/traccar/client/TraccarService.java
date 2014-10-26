@@ -31,6 +31,8 @@ import android.os.PowerManager.WakeLock;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
+import java.util.Calendar;
+
 
 /**
  * Background service
@@ -45,11 +47,13 @@ public class TraccarService extends Service {
     private int interval;
     private String provider;
     private boolean extended;
+    private int mStartHours, mStopHours;
+    private boolean mIsTimeRestricted;
 
     private SharedPreferences sharedPreferences;
     private ClientController clientController;
     private PositionProvider positionProvider;
-    
+
     private WakeLock wakeLock;
 
     @Override
@@ -69,6 +73,11 @@ public class TraccarService extends Service {
             port = Integer.valueOf(sharedPreferences.getString(TraccarActivity.KEY_PORT, null));
             interval = Integer.valueOf(sharedPreferences.getString(TraccarActivity.KEY_INTERVAL, null));
             extended = sharedPreferences.getBoolean(TraccarActivity.KEY_EXTENDED, false);
+            mStartHours = sharedPreferences.getInt(TraccarActivity.KEY_RESTRICT_START_TIME, 0);
+            mStopHours = sharedPreferences.getInt(TraccarActivity.KEY_RESTRICT_STOP_TIME, 23);
+            mIsTimeRestricted = (sharedPreferences.getBoolean(TraccarActivity.KEY_RESTRICT_TIME, false));
+
+
         } catch (Exception error) {
             Log.w(LOG_TAG, error);
         }
@@ -76,9 +85,10 @@ public class TraccarService extends Service {
         clientController = new ClientController(this, address, port, Protocol.createLoginMessage(id));
         clientController.start();
 
-        positionProvider = new PositionProvider(this, provider, interval * 1000, positionListener);
-        positionProvider.startUpdates();
+        positionProvider = new PositionProvider(this, provider, interval * 1000, mStartHours,
+                mStopHours, mIsTimeRestricted, positionListener);
 
+        positionProvider.startUpdates();
         sharedPreferences.registerOnSharedPreferenceChangeListener(preferenceChangeListener);
     }
 
@@ -92,15 +102,15 @@ public class TraccarService extends Service {
         StatusActivity.addMessage(getString(R.string.status_service_destroy));
 
         if (sharedPreferences != null) {
-        	sharedPreferences.unregisterOnSharedPreferenceChangeListener(preferenceChangeListener);
+            sharedPreferences.unregisterOnSharedPreferenceChangeListener(preferenceChangeListener);
         }
 
         if (positionProvider != null) {
-        	positionProvider.stopUpdates();
+            positionProvider.stopUpdates();
         }
 
         if (clientController != null) {
-        	clientController.stop();
+            clientController.stop();
         }
 
         wakeLock.release();
@@ -150,7 +160,8 @@ public class TraccarService extends Service {
 
                     interval = Integer.valueOf(sharedPreferences.getString(TraccarActivity.KEY_INTERVAL, null));
                     positionProvider.stopUpdates();
-                    positionProvider = new PositionProvider(TraccarService.this, provider, interval * 1000, positionListener);
+                    positionProvider = new PositionProvider(TraccarService.this, provider, interval * 1000, mStartHours, mStopHours
+                            , mIsTimeRestricted, positionListener);
                     positionProvider.startUpdates();
 
                 } else if (key.equals(TraccarActivity.KEY_ID)) {
@@ -162,7 +173,8 @@ public class TraccarService extends Service {
 
                     provider = sharedPreferences.getString(TraccarActivity.KEY_PROVIDER, null);
                     positionProvider.stopUpdates();
-                    positionProvider = new PositionProvider(TraccarService.this, provider, interval * 1000, positionListener);
+                    positionProvider = new PositionProvider(TraccarService.this, provider, interval * 1000, mStartHours, mStopHours
+                            , mIsTimeRestricted, positionListener);
                     positionProvider.startUpdates();
 
                 } else if (key.equals(TraccarActivity.KEY_EXTENDED)) {

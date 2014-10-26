@@ -136,21 +136,25 @@ public class TraccarActivity extends PreferenceActivity implements View.OnClickL
         rangebar.setTickHeight(25);
         rangebar.setBarWeight(6);
         rangebar.setBarColor(229999999);
+        int startTime = mSharedPreferences.getInt(KEY_RESTRICT_START_TIME, 1);
+        int stopTime = mSharedPreferences.getInt(KEY_RESTRICT_STOP_TIME, 24);
+
+        rangebar.setThumbIndices(startTime - 1, stopTime - 1);
+        timeDifferenceText.setText((startTime) + " hours - " + (stopTime) + " hours");
 
         rangebar.setOnRangeBarChangeListener(new RangeBar.OnRangeBarChangeListener() {
             @Override
             public void onIndexChangeListener(RangeBar rangeBar, int leftThumbIndex, int rightThumbIndex) {
-                timeDifferenceText.setText(leftThumbIndex + " hours - " + rightThumbIndex + " hours");
-                mSharedPreferences.edit().putInt(KEY_RESTRICT_START_TIME, leftThumbIndex).commit();
-                mSharedPreferences.edit().putInt(KEY_RESTRICT_STOP_TIME, rightThumbIndex).commit();
-                findPreference(KEY_RESTRICT_TIME).setSummary(leftThumbIndex + " hours - " + rightThumbIndex + " hours");
+                timeDifferenceText.setText((leftThumbIndex + 1) + " hours - " + (rightThumbIndex + 1) + " hours");
+                mSharedPreferences.edit().putInt(KEY_RESTRICT_START_TIME, leftThumbIndex + 1).commit();
+                mSharedPreferences.edit().putInt(KEY_RESTRICT_STOP_TIME, rightThumbIndex + 1).commit();
+                findPreference(KEY_RESTRICT_TIME).setSummary((leftThumbIndex + 1) + " hours - " +
+                        (rightThumbIndex + 1) + " hours");
 
             }
         });
 
         setButton.setOnClickListener(this);
-
-
         mSelectRestrictTimeDialog.show();
     }
 
@@ -204,8 +208,8 @@ public class TraccarActivity extends PreferenceActivity implements View.OnClickL
         findPreference(KEY_ADDRESS).setSummary(sharedPreferences.getString(KEY_ADDRESS, serverAddress));
 
         if (sharedPreferences.getBoolean(KEY_RESTRICT_TIME, false)) {
-            int startTime = sharedPreferences.getInt(KEY_RESTRICT_START_TIME, 0);
-            int stopTime = sharedPreferences.getInt(KEY_RESTRICT_STOP_TIME, 23);
+            int startTime = sharedPreferences.getInt(KEY_RESTRICT_START_TIME, 1);
+            int stopTime = sharedPreferences.getInt(KEY_RESTRICT_STOP_TIME, 24);
             findPreference(KEY_RESTRICT_TIME).setSummary(startTime + " hours - " + stopTime + " hours");
         } else {
             findPreference(KEY_RESTRICT_TIME).setSummary(getResources().getString(R.string.select_time_interval));
