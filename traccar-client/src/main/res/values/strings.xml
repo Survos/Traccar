@@ -47,5 +47,6 @@
 
     <string name="timedifference">0 hours - 24 hours</string>
     <string name="set">Set</string>
+    <string name="select_time_interval">Select time interval</string>
 
 </resources>

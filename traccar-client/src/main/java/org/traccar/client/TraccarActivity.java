@@ -62,7 +62,7 @@ public class TraccarActivity extends PreferenceActivity implements View.OnClickL
     /**
      * holds the dialog for selecting time range
      */
-    private Dialog  mSelectRestrictTimeDialog;
+    private Dialog mSelectRestrictTimeDialog;
 
     /**
      * variable for holding sharedpreferences
@@ -73,7 +73,7 @@ public class TraccarActivity extends PreferenceActivity implements View.OnClickL
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.preferences);
-        mSharedPreferences= getPreferenceScreen().getSharedPreferences();
+        mSharedPreferences = getPreferenceScreen().getSharedPreferences();
 
         initPreferences();
         if (mSharedPreferences.getBoolean(KEY_STATUS, false))
@@ -110,7 +110,8 @@ public class TraccarActivity extends PreferenceActivity implements View.OnClickL
 
             } else if (key.equals(KEY_RESTRICT_TIME)) {
                 if (!sharedPreferences.getBoolean(KEY_RESTRICT_TIME, false)) {
-
+                    findPreference(KEY_RESTRICT_TIME).setSummary(getResources().
+                            getString(R.string.select_time_interval));
                 } else {
                     openSelectRestrictTimeDialog();
                 }
@@ -142,6 +143,7 @@ public class TraccarActivity extends PreferenceActivity implements View.OnClickL
                 timeDifferenceText.setText(leftThumbIndex + " hours - " + rightThumbIndex + " hours");
                 mSharedPreferences.edit().putInt(KEY_RESTRICT_START_TIME, leftThumbIndex).commit();
                 mSharedPreferences.edit().putInt(KEY_RESTRICT_STOP_TIME, rightThumbIndex).commit();
+                findPreference(KEY_RESTRICT_TIME).setSummary(leftThumbIndex + " hours - " + rightThumbIndex + " hours");
 
             }
         });
@@ -200,6 +202,14 @@ public class TraccarActivity extends PreferenceActivity implements View.OnClickL
 
         findPreference(KEY_ID).setSummary(sharedPreferences.getString(KEY_ID, id));
         findPreference(KEY_ADDRESS).setSummary(sharedPreferences.getString(KEY_ADDRESS, serverAddress));
+
+        if (sharedPreferences.getBoolean(KEY_RESTRICT_TIME, false)) {
+            int startTime = sharedPreferences.getInt(KEY_RESTRICT_START_TIME, 0);
+            int stopTime = sharedPreferences.getInt(KEY_RESTRICT_STOP_TIME, 23);
+            findPreference(KEY_RESTRICT_TIME).setSummary(startTime + " hours - " + stopTime + " hours");
+        } else {
+            findPreference(KEY_RESTRICT_TIME).setSummary(getResources().getString(R.string.select_time_interval));
+        }
 
 
     }
