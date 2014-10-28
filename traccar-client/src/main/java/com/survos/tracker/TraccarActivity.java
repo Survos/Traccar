@@ -204,6 +204,18 @@ public class TraccarActivity extends PreferenceActivity implements View.OnClickL
 
         String serverAddress = sharedPreferences.getString(KEY_ADDRESS, getResources().getString(R.string.settings_address_summary));
 
+        findPreference(KEY_PORT).setSummary(sharedPreferences.getString(KEY_PORT,
+                getResources().getString(R.string.settings_port_summary)));
+
+        findPreference(KEY_INTERVAL).setSummary(sharedPreferences.getString(KEY_INTERVAL,
+                getResources().getString(R.string.settings_interval_summary)));
+
+        findPreference(KEY_PROVIDER).setSummary(sharedPreferences.getString(KEY_PROVIDER,
+                getResources().getString(R.string.settings_provider_summary)));
+
+        findPreference(KEY_PROVIDER).setSummary(sharedPreferences.getString(KEY_PROVIDER,
+                getResources().getString(R.string.settings_provider_summary)));
+
         findPreference(KEY_ID).setSummary(sharedPreferences.getString(KEY_ID, id));
         findPreference(KEY_ADDRESS).setSummary(sharedPreferences.getString(KEY_ADDRESS, serverAddress));
 
