@@ -52,7 +52,7 @@ public class Protocol {
      * Format location message
      */
     public static String createLocationMessage(boolean extended, Location l, double battery) {
-        StringBuilder s = new StringBuilder(extended ? "$TRCCR," : "$GPRMC,");
+        StringBuilder s = new StringBuilder(extended ? "$TRCCR2," : "$GPRMC,");
         Formatter f = new Formatter(s, Locale.ENGLISH);
         Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"), Locale.ENGLISH);
         calendar.setTimeInMillis(l.getTime());
@@ -70,6 +70,8 @@ public class Protocol {
             f.format("%.2f,%.2f,", l.getSpeed() * 1.943844, l.getBearing());
             f.format("%.2f,", l.getAltitude());
             f.format("%.0f,", battery);
+            f.format("%s,",l.getProvider());
+            f.format("%.2f,",l.getAccuracy());
 
         } else {
 
@@ -83,6 +85,8 @@ public class Protocol {
             double speed = l.getSpeed() * 1.943844; // speed in knots
             f.format("%.2f,%.2f,", speed, l.getBearing());
             f.format("%1$td%1$tm%1$ty,,", calendar);
+            f.format("%s,",l.getProvider());
+            f.format("%.2f,",l.getAccuracy());
 
         }
 

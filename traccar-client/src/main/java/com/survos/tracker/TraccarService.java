@@ -31,7 +31,6 @@ import android.os.PowerManager.WakeLock;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
-import java.util.Calendar;
 
 
 /**

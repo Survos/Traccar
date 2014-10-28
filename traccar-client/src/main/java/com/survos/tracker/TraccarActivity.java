@@ -115,6 +115,18 @@ public class TraccarActivity extends PreferenceActivity implements View.OnClickL
                 } else {
                     openSelectRestrictTimeDialog();
                 }
+            } else if (key.equals(KEY_PORT)) {
+
+                findPreference(KEY_PORT).setSummary(sharedPreferences.getString(KEY_PORT,
+                        getResources().getString(R.string.settings_port_summary)));
+
+            } else if (key.equals(KEY_INTERVAL)) {
+                findPreference(KEY_INTERVAL).setSummary(sharedPreferences.getString(KEY_INTERVAL,
+                        getResources().getString(R.string.settings_interval_summary)));
+
+            } else if (key.equals(KEY_PROVIDER)) {
+                findPreference(KEY_PROVIDER).setSummary(sharedPreferences.getString(KEY_PROVIDER,
+                        getResources().getString(R.string.settings_provider_summary)));
             }
         }
     };
@@ -213,8 +225,6 @@ public class TraccarActivity extends PreferenceActivity implements View.OnClickL
         findPreference(KEY_PROVIDER).setSummary(sharedPreferences.getString(KEY_PROVIDER,
                 getResources().getString(R.string.settings_provider_summary)));
 
-        findPreference(KEY_PROVIDER).setSummary(sharedPreferences.getString(KEY_PROVIDER,
-                getResources().getString(R.string.settings_provider_summary)));
 
         findPreference(KEY_ID).setSummary(sharedPreferences.getString(KEY_ID, id));
         findPreference(KEY_ADDRESS).setSummary(sharedPreferences.getString(KEY_ADDRESS, serverAddress));
