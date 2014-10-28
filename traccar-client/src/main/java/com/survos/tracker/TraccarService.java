@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.traccar.client;
+package com.survos.tracker;
 
 import android.annotation.TargetApi;
 import android.app.Service;

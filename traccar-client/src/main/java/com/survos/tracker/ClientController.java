@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.traccar.client;
+package com.survos.tracker;
 
 import java.util.LinkedList;
 import java.util.Queue;
@@ -24,7 +24,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.os.Handler;
-import android.util.Log;
 
 
 
