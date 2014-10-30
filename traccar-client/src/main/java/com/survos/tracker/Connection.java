@@ -21,17 +21,19 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 
 import android.content.ContentValues;
+import android.database.Cursor;
 import android.os.AsyncTask;
 import android.util.Log;
 
 import com.survos.tracker.data.DBInterface;
 import com.survos.tracker.data.DatabaseColumns;
 import com.survos.tracker.data.Logger;
+import com.survos.tracker.data.SQLConstants;
 import com.survos.tracker.data.TableServerCache;
 
 /**
  * Asynchronous connection
- *
+ * <p/>
  * All methods should be called from UI thread only.
  */
 public class Connection implements Closeable {
@@ -44,6 +46,7 @@ public class Connection implements Closeable {
      */
     public interface ConnectionHandler {
         void onConnected(boolean result);
+
         void onSent(boolean result);
     }
 
@@ -111,20 +114,44 @@ public class Connection implements Closeable {
     public void send(String message) {
         busy = true;
 
+        final String mymessage=message;
         new AsyncTask<String, Void, Boolean>() {
 
             @Override
             protected Boolean doInBackground(String... params) {
                 try {
+
+                    Cursor cursor = DBInterface.query(true, TableServerCache.NAME, null, null, null, null, null, null, null);
+
+                    if (cursor.getCount() > 0) {
+                        cursor.moveToFirst();
+                        int i = 0;
+                        while (i <= cursor.getCount()) {
+
+                            if(i==0){
+                                socketStream.write(mymessage.getBytes());
+                            }
+                            else {
+                                socketStream.write(cursor.getString(cursor.getColumnIndex(DatabaseColumns.MESSAGE)).getBytes());
+
+                                cursor.moveToNext();
+                            }
+                            socketStream.flush();
+                            handler.onSent(true);
+
+                            i++;
+                        }
+                    }
+                    DBInterface.delete(TableServerCache.NAME, null, null,false);
                     socketStream.write(params[0].getBytes());
                     socketStream.flush();
                     return true;
                 } catch (Exception e) {
                     ContentValues values = new ContentValues();
-                    values.put(DatabaseColumns.MESSAGE,params[0]);
+                    values.put(DatabaseColumns.MESSAGE, params[0]);
 
                     Log.w(LOG_TAG, e.getMessage());
-                    Logger.d(LOG_TAG,"some value"+ DBInterface.insert(TableServerCache.NAME, null, values, false) + "");
+                    Logger.d(LOG_TAG, "some value" + DBInterface.insert(TableServerCache.NAME, null, values, false) + "");
                     return false;
                 }
             }

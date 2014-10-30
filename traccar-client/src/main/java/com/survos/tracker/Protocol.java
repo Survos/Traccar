@@ -131,7 +131,7 @@ public class Protocol implements DBInterface.AsyncDbQueryCallback{
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(TrackerApplication.getStaticContext());
 
 
-        if(sharedPreferences.getBoolean(ClientController.KEY_CONNECTED,false)){
+        if(!sharedPreferences.getBoolean(ClientController.KEY_CONNECTED,false)){
             DBInterface.insertAsync(INSERT_MESSAGE_CACHE,null,null, TableServerCache.NAME,null,valueCache,
                     false,this);
         }

@@ -15,11 +15,7 @@
  */
 package com.survos.tracker;
 
-import java.util.LinkedList;
-import java.util.Queue;
-
 import android.content.BroadcastReceiver;
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -27,12 +23,9 @@ import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.os.Handler;
 import android.preference.PreferenceManager;
-import android.util.Log;
 
-import com.survos.tracker.data.DBInterface;
-import com.survos.tracker.data.DatabaseColumns;
-import com.survos.tracker.data.Logger;
-import com.survos.tracker.data.TableServerCache;
+import java.util.LinkedList;
+import java.util.Queue;
 
 
 public class ClientController implements Connection.ConnectionHandler {
