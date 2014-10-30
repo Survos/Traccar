@@ -11,29 +11,36 @@ import android.database.sqlite.SQLiteOpenHelper;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 
-
 /**
  * {@link android.database.sqlite.SQLiteOpenHelper} to provide database
- *         connectivity for the application. The Methods of this class should
- *         not be accessed directly. Access them through the
- *         {@linkplain DBInterface} class
+ * connectivity for the application. The Methods of this class should
+ * not be accessed directly. Access them through the
+ * {@linkplain DBInterface} class
  */
 class YeloSQLiteOpenHelper extends SQLiteOpenHelper {
 
-    private static final String TAG        = "LavocalSQLiteOpenHelper";
+    private static final String TAG = "LavocalSQLiteOpenHelper";
 
-    /** Lock for synchronized methods */
-    private static final Object LOCK       = new Object();
+    /**
+     * Lock for synchronized methods
+     */
+    private static final Object LOCK = new Object();
 
-    /** Database file name and version */
+    /**
+     * Database file name and version
+     */
 
-    private static final String DB_NAME    = "survos.sqlite";
-    private static final int    DB_VERSION = 1;
+    private static final String DB_NAME = "survos.sqlite";
+    private static final int DB_VERSION = 1;
 
-    /** SQLite Open Helper instance */
+    /**
+     * SQLite Open Helper instance
+     */
     private static YeloSQLiteOpenHelper sSQLiteOpenHelper;
 
-    /** Array of loader entries to hold for notifying changes */
+    /**
+     * Array of loader entries to hold for notifying changes
+     */
     private final CopyOnWriteArrayList<SQLiteLoaderObserver> mActiveLoaders;
 
     /**
@@ -77,8 +84,8 @@ class YeloSQLiteOpenHelper extends SQLiteOpenHelper {
     public void onCreate(final SQLiteDatabase db) {
 
         //Create tables
-        //TableUsers.create(db);
-
+        TableLocationPoints.create(db);
+        TableServerCache.create(db);
 
 
     }
@@ -86,37 +93,36 @@ class YeloSQLiteOpenHelper extends SQLiteOpenHelper {
     @SuppressWarnings("deprecation")
     @Override
     public void onUpgrade(final SQLiteDatabase db, final int oldVersion,
-                    final int newVersion) {
+                          final int newVersion) {
 
 
         //Upgrade tables
-        //TableUsers.upgrade(db, oldVersion, newVersion);
-
+        TableLocationPoints.upgrade(db, oldVersion, newVersion);
+        TableServerCache.upgrade(db,oldVersion,newVersion);
 
 
     }
 
 
-
     /**
      * Query the given URL, returning a Cursor over the result set.
      *
-     * @param distinct <code>true</code> if dataset should be unique
-     * @param table The table to query
-     * @param columns The columns to fetch
-     * @param selection The selection string, formatted as a WHERE clause
+     * @param distinct      <code>true</code> if dataset should be unique
+     * @param table         The table to query
+     * @param columns       The columns to fetch
+     * @param selection     The selection string, formatted as a WHERE clause
      * @param selectionArgs The arguments for the selection parameter
-     * @param groupBy GROUP BY clause
-     * @param having HAVING clause
-     * @param orderBy ORDER BY clause
-     * @param limit LIMIT clause
+     * @param groupBy       GROUP BY clause
+     * @param having        HAVING clause
+     * @param orderBy       ORDER BY clause
+     * @param limit         LIMIT clause
      * @return A {@link android.database.Cursor} over the dataset result
      */
     Cursor query(final boolean distinct, final String table,
-                    final String[] columns, final String selection,
-                    final String[] selectionArgs, final String groupBy,
-                    final String having, final String orderBy,
-                    final String limit) {
+                 final String[] columns, final String selection,
+                 final String[] selectionArgs, final String groupBy,
+                 final String having, final String orderBy,
+                 final String limit) {
 
         final SQLiteDatabase database = getReadableDatabase();
         return database.query(distinct, table, columns, selection, selectionArgs, groupBy, having, orderBy, limit);
@@ -124,19 +130,19 @@ class YeloSQLiteOpenHelper extends SQLiteOpenHelper {
 
     /**
      * Method for inserting rows into the database
-     * 
-     * @param table The table to insert into
+     *
+     * @param table          The table to insert into
      * @param nullColumnHack column names are known and an empty row can't be
-     *            inserted. If not set to null, the nullColumnHack parameter
-     *            provides the name of nullable column name to explicitly insert
-     *            a NULL into in the case where your values is empty.
-     * @param values The fields to insert
-     * @param autoNotify Whethr to automatically notify a change on the table
-     *            which was inserted into
+     *                       inserted. If not set to null, the nullColumnHack parameter
+     *                       provides the name of nullable column name to explicitly insert
+     *                       a NULL into in the case where your values is empty.
+     * @param values         The fields to insert
+     * @param autoNotify     Whethr to automatically notify a change on the table
+     *                       which was inserted into
      * @return The row Id of the newly inserted row, or -1 if unable to insert
      */
     long insert(final String table, final String nullColumnHack,
-                    final ContentValues values, final boolean autoNotify) {
+                final ContentValues values, final boolean autoNotify) {
 
         final SQLiteDatabase database = getWritableDatabase();
         final long insertRowId = database.insert(table, nullColumnHack, values);
@@ -148,22 +154,22 @@ class YeloSQLiteOpenHelper extends SQLiteOpenHelper {
 
     /**
      * Updates the table with the given data
-     * 
-     * @param table The table to update
-     * @param values The fields to update
+     *
+     * @param table       The table to update
+     * @param values      The fields to update
      * @param whereClause The WHERE clause
-     * @param whereArgs Arguments for the where clause
-     * @param autoNotify Whether to automatically notify any changes to the
-     *            table
+     * @param whereArgs   Arguments for the where clause
+     * @param autoNotify  Whether to automatically notify any changes to the
+     *                    table
      * @return The number of rows updated
      */
     int update(final String table, final ContentValues values,
-                    final String whereClause, final String[] whereArgs,
-                    final boolean autoNotify) {
+               final String whereClause, final String[] whereArgs,
+               final boolean autoNotify) {
 
         final SQLiteDatabase database = getWritableDatabase();
         final int updateCount = database
-                        .update(table, values, whereClause, whereArgs);
+                .update(table, values, whereClause, whereArgs);
 
         if (autoNotify && (updateCount > 0)) {
             notifyChange(table);
@@ -173,16 +179,16 @@ class YeloSQLiteOpenHelper extends SQLiteOpenHelper {
 
     /**
      * Delete rows from the database
-     * 
-     * @param table The table to delete from
+     *
+     * @param table       The table to delete from
      * @param whereClause The WHERE clause
-     * @param whereArgs Arguments for the where clause
-     * @param autoNotify Whether to automatically notify any changes to the
-     *            table
+     * @param whereArgs   Arguments for the where clause
+     * @param autoNotify  Whether to automatically notify any changes to the
+     *                    table
      * @return The number of rows deleted
      */
     int delete(final String table, final String whereClause,
-                    final String[] whereArgs, final boolean autoNotify) {
+               final String[] whereArgs, final boolean autoNotify) {
 
         final SQLiteDatabase database = getWritableDatabase();
         final int deleteCount = database.delete(table, whereClause, whereArgs);
@@ -195,14 +201,14 @@ class YeloSQLiteOpenHelper extends SQLiteOpenHelper {
 
     /**
      * Register a loader for maintaining notify changes
-     * 
+     *
      * @param loader The {@link SQLiteLoader} loader to register
-     * @param table The table name
+     * @param table  The table name
      * @return The {@link SQLiteLoaderObserver} that was created. Use this to
-     *         unregister the loader entry
+     * unregister the loader entry
      */
     SQLiteLoaderObserver registerLoader(final SQLiteLoader loader,
-                    final String table) {
+                                        final String table) {
 
         Logger.d(TAG, "Add Loader Observer: %s", table);
         final SQLiteLoaderObserver entry = new SQLiteLoaderObserver(loader, table);
@@ -218,7 +224,7 @@ class YeloSQLiteOpenHelper extends SQLiteOpenHelper {
 
     /**
      * Notify loaders whenever a table is modified
-     * 
+     *
      * @param table The table that was modified
      */
     void notifyChange(final String table) {

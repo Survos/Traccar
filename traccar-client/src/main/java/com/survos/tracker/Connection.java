@@ -20,12 +20,18 @@ import java.io.OutputStream;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 
+import android.content.ContentValues;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.survos.tracker.data.DBInterface;
+import com.survos.tracker.data.DatabaseColumns;
+import com.survos.tracker.data.Logger;
+import com.survos.tracker.data.TableServerCache;
+
 /**
  * Asynchronous connection
- * 
+ *
  * All methods should be called from UI thread only.
  */
 public class Connection implements Closeable {
@@ -114,7 +120,11 @@ public class Connection implements Closeable {
                     socketStream.flush();
                     return true;
                 } catch (Exception e) {
+                    ContentValues values = new ContentValues();
+                    values.put(DatabaseColumns.MESSAGE,params[0]);
+
                     Log.w(LOG_TAG, e.getMessage());
+                    Logger.d(LOG_TAG,"some value"+ DBInterface.insert(TableServerCache.NAME, null, values, false) + "");
                     return false;
                 }
             }

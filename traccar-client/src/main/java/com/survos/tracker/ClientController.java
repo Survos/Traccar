@@ -19,17 +19,27 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 import android.content.BroadcastReceiver;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.os.Handler;
+import android.preference.PreferenceManager;
+import android.util.Log;
 
+import com.survos.tracker.data.DBInterface;
+import com.survos.tracker.data.DatabaseColumns;
+import com.survos.tracker.data.Logger;
+import com.survos.tracker.data.TableServerCache;
 
 
 public class ClientController implements Connection.ConnectionHandler {
 
     public static final long RECONNECT_DELAY = 10 * 1000;
+
+    public static final String KEY_CONNECTED = "key_connected";
 
     private Context context;
 
@@ -41,6 +51,7 @@ public class ClientController implements Connection.ConnectionHandler {
     private String address;
     private int port;
     private String loginMessage;
+    private SharedPreferences mSharedPreferences;
 
     public ClientController(Context context, String address, int port, String loginMessage) {
         this.context = context;
@@ -48,6 +59,7 @@ public class ClientController implements Connection.ConnectionHandler {
         this.address = address;
         this.port = port;
         this.loginMessage = loginMessage;
+        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
     }
 
     private BroadcastReceiver connectivityListener = new BroadcastReceiver() {
@@ -113,16 +125,22 @@ public class ClientController implements Connection.ConnectionHandler {
         if (!connection.isClosed() && !connection.isBusy()) {
             connection.send(messageQueue.poll());
         }
+
     }
 
     @Override
     public void onConnected(boolean result) {
         if (result) {
             StatusActivity.addMessage(context.getString(R.string.status_connection_success));
+            mSharedPreferences.edit().putBoolean(KEY_CONNECTED, true).commit();
             connection.send(loginMessage);
         } else {
             StatusActivity.addMessage(context.getString(R.string.status_connection_fail));
+
+            mSharedPreferences.edit().putBoolean(KEY_CONNECTED, false).commit();
+
             delayedReconnect();
+
         }
     }
 

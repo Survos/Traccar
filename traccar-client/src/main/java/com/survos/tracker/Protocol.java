@@ -21,13 +21,25 @@ import java.util.Locale;
 import java.util.TimeZone;
 import java.util.logging.Logger;
 
+import android.content.ContentValues;
+import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.location.Location;
+import android.preference.PreferenceManager;
 import android.util.Log;
+
+import com.survos.tracker.data.DBInterface;
+import com.survos.tracker.data.DatabaseColumns;
+import com.survos.tracker.data.TableLocationPoints;
+import com.survos.tracker.data.TableServerCache;
 
 /**
  * Protocol formatting
  */
-public class Protocol {
+public class Protocol implements DBInterface.AsyncDbQueryCallback{
+
+    public  final int INSERT_LOCATION = 1;
+    public  final int INSERT_MESSAGE_CACHE = 2;
 
     /**
      * Format device id message
@@ -51,7 +63,7 @@ public class Protocol {
     /**
      * Format location message
      */
-    public static String createLocationMessage( Location l, double battery) {
+    public  String createLocationMessage( Location l, double battery) {
         StringBuilder s = new StringBuilder(true ? "$TRCCR2," : "$GPRMC,");
         Formatter f = new Formatter(s, Locale.ENGLISH);
         Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"), Locale.ENGLISH);
@@ -72,6 +84,22 @@ public class Protocol {
             f.format("%.0f,", battery);
             f.format("%s,",l.getProvider());
             f.format("%.2f,",l.getAccuracy());
+
+        ContentValues values = new ContentValues();
+        values.put(DatabaseColumns.ID,l.getTime()+"");
+        values.put(DatabaseColumns.ACCURACY,l.getAccuracy()+"");
+        values.put(DatabaseColumns.ALTITUDE,l.getAltitude()+"");
+        values.put(DatabaseColumns.BATTERY_PERCENTAGE,battery+"");
+        values.put(DatabaseColumns.BEARING,l.getBearing()+"");
+        values.put(DatabaseColumns.LATITUDE,l.getLatitude()+"");
+        values.put(DatabaseColumns.LONGITUDE,l.getLongitude()+"");
+        values.put(DatabaseColumns.PROVIDER,l.getProvider()+"");
+        values.put(DatabaseColumns.TYPE,"traccar2");
+        values.put(DatabaseColumns.SPEED,(l.getSpeed()*1.943844)+"");
+
+        DBInterface.insertAsync(INSERT_LOCATION,null,null,TableLocationPoints.NAME,null,values,
+                false,this);
+
 
 //        } else {
 //
@@ -97,7 +125,38 @@ public class Protocol {
         f.format("*%02x\r\n", (int) checksum);
         f.close();
 
+        ContentValues valueCache = new ContentValues();
+        valueCache.put(DatabaseColumns.MESSAGE,s.toString());
+
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(TrackerApplication.getStaticContext());
+
+
+        if(sharedPreferences.getBoolean(ClientController.KEY_CONNECTED,false)){
+            DBInterface.insertAsync(INSERT_MESSAGE_CACHE,null,null, TableServerCache.NAME,null,valueCache,
+                    false,this);
+        }
+
         return s.toString();
+    }
+
+    @Override
+    public void onInsertComplete(int taskId, Object cookie, long insertRowId) {
+
+    }
+
+    @Override
+    public void onDeleteComplete(int taskId, Object cookie, int deleteCount) {
+
+    }
+
+    @Override
+    public void onUpdateComplete(int taskId, Object cookie, int updateCount) {
+
+    }
+
+    @Override
+    public void onQueryComplete(int taskId, Object cookie, Cursor cursor) {
+
     }
 }
 

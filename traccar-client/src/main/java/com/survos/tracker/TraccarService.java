@@ -54,6 +54,8 @@ public class TraccarService extends Service {
 
     private WakeLock wakeLock;
 
+    private Protocol mProtocol;
+
     @Override
     public void onCreate() {
         StatusActivity.addMessage(getString(R.string.status_service_create));
@@ -61,6 +63,8 @@ public class TraccarService extends Service {
         PowerManager powerManager = (PowerManager) getSystemService(Context.POWER_SERVICE);
         wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, getClass().getName());
         wakeLock.acquire();
+
+        mProtocol = new Protocol();
 
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
@@ -79,7 +83,7 @@ public class TraccarService extends Service {
             Log.w(LOG_TAG, error);
         }
 
-        clientController = new ClientController(this, address, port, Protocol.createLoginMessage(id));
+        clientController = new ClientController(this, address, port, mProtocol.createLoginMessage(id));
         clientController.start();
 
         positionProvider = new PositionProvider(this, provider, interval * 1000, mStartHours,
@@ -131,7 +135,7 @@ public class TraccarService extends Service {
         public void onPositionUpdate(Location location) {
             if (location != null) {
                 StatusActivity.addMessage(getString(R.string.status_location_update));
-                clientController.setNewLocation(Protocol.createLocationMessage( location, getBatteryLevel()));
+                clientController.setNewLocation(mProtocol.createLocationMessage( location, getBatteryLevel()));
             }
         }
 
@@ -164,7 +168,7 @@ public class TraccarService extends Service {
                 } else if (key.equals(TraccarActivity.KEY_ID)) {
 
                     id = sharedPreferences.getString(TraccarActivity.KEY_ID, null);
-                    clientController.setNewLogin(Protocol.createLoginMessage(id));
+                    clientController.setNewLogin(mProtocol.createLoginMessage(id));
 
                 } else if (key.equals(TraccarActivity.KEY_PROVIDER)) {
 
