@@ -53,7 +53,6 @@ public class TraccarActivity extends PreferenceActivity implements View.OnClickL
     public static final String KEY_PORT = "port";
     public static final String KEY_INTERVAL = "interval";
     public static final String KEY_PROVIDER = "provider";
-    public static final String KEY_EXTENDED = "extended";
     public static final String KEY_STATUS = "status";
     public static final String KEY_RESTRICT_TIME = "time_restrict";
     public static final String KEY_RESTRICT_START_TIME = "restrict_start_time";

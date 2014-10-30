@@ -45,7 +45,6 @@ public class TraccarService extends Service {
     private int port;
     private int interval;
     private String provider;
-    private boolean extended;
     private int mStartHours, mStopHours;
     private boolean mIsTimeRestricted;
 
@@ -71,7 +70,6 @@ public class TraccarService extends Service {
             provider = sharedPreferences.getString(TraccarActivity.KEY_PROVIDER, null);
             port = Integer.valueOf(sharedPreferences.getString(TraccarActivity.KEY_PORT, null));
             interval = Integer.valueOf(sharedPreferences.getString(TraccarActivity.KEY_INTERVAL, null));
-            extended = sharedPreferences.getBoolean(TraccarActivity.KEY_EXTENDED, false);
             mStartHours = sharedPreferences.getInt(TraccarActivity.KEY_RESTRICT_START_TIME, 0);
             mStopHours = sharedPreferences.getInt(TraccarActivity.KEY_RESTRICT_STOP_TIME, 23);
             mIsTimeRestricted = (sharedPreferences.getBoolean(TraccarActivity.KEY_RESTRICT_TIME, false));
@@ -133,7 +131,7 @@ public class TraccarService extends Service {
         public void onPositionUpdate(Location location) {
             if (location != null) {
                 StatusActivity.addMessage(getString(R.string.status_location_update));
-                clientController.setNewLocation(Protocol.createLocationMessage(extended, location, getBatteryLevel()));
+                clientController.setNewLocation(Protocol.createLocationMessage( location, getBatteryLevel()));
             }
         }
 
@@ -175,10 +173,6 @@ public class TraccarService extends Service {
                     positionProvider = new PositionProvider(TraccarService.this, provider, interval * 1000, mStartHours, mStopHours
                             , mIsTimeRestricted, positionListener);
                     positionProvider.startUpdates();
-
-                } else if (key.equals(TraccarActivity.KEY_EXTENDED)) {
-
-                    extended = sharedPreferences.getBoolean(TraccarActivity.KEY_EXTENDED, false);
 
                 }
             } catch (Exception error) {

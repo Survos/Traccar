@@ -12,7 +12,7 @@
         android:title="@string/settings_address_title" />
 
     <EditTextPreference
-        android:defaultValue="5000"
+        android:defaultValue="5005"
         android:key="port"
         android:numeric="integer"
         android:summary="@string/settings_port_summary"
@@ -33,11 +33,6 @@
         android:summary="@string/settings_provider_summary"
         android:title="@string/settings_provider_title" />
 
-    <CheckBoxPreference
-        android:defaultValue="true"
-        android:key="extended"
-        android:summary="@string/settings_extended_summary"
-        android:title="@string/settings_extended_title" />
 
     <CheckBoxPreference
         android:defaultValue="false"
