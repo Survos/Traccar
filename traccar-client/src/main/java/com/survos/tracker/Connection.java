@@ -15,11 +15,6 @@
  */
 package com.survos.tracker;
 
-import java.io.Closeable;
-import java.io.OutputStream;
-import java.net.InetSocketAddress;
-import java.net.Socket;
-
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.os.AsyncTask;
@@ -28,8 +23,12 @@ import android.util.Log;
 import com.survos.tracker.data.DBInterface;
 import com.survos.tracker.data.DatabaseColumns;
 import com.survos.tracker.data.Logger;
-import com.survos.tracker.data.SQLConstants;
 import com.survos.tracker.data.TableServerCache;
+
+import java.io.Closeable;
+import java.io.OutputStream;
+import java.net.InetSocketAddress;
+import java.net.Socket;
 
 /**
  * Asynchronous connection
