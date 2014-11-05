@@ -52,7 +52,7 @@ public class PositionProvider {
     private int mStartHours;
     private int mStopHours;
 
-    public PositionProvider(Context context, String type, long period, int startHours, int stopHours,
+    public PositionProvider(Context context, long period, int startHours, int stopHours,
                             boolean isTimeRestricted, PositionListener listener) {
         handler = new Handler(context.getMainLooper());
         locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
@@ -64,14 +64,14 @@ public class PositionProvider {
         this.mStopHours = stopHours;
 
         // Determine providers
-        if (type.equals(PROVIDER_MIXED)) {
+      //  if (type.equals(PROVIDER_MIXED)) {
             useFine = true;
             useCoarse = true;
-        } else if (type.equals(LocationManager.GPS_PROVIDER)) {
-            useFine = true;
-        } else if (type.equals(LocationManager.NETWORK_PROVIDER)) {
-            useCoarse = true;
-        }
+//        } else if (type.equals(LocationManager.GPS_PROVIDER)) {
+//            useFine = true;
+//        } else if (type.equals(LocationManager.NETWORK_PROVIDER)) {
+//            useCoarse = true;
+//        }
     }
 
     public void startUpdates() {

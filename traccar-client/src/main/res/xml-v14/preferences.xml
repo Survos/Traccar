@@ -25,14 +25,6 @@
         android:summary="@string/settings_interval_summary"
         android:title="@string/settings_interval_title" />
 
-    <ListPreference
-        android:defaultValue="gps"
-        android:entries="@array/settings_provider_names"
-        android:entryValues="@array/settings_provider_values"
-        android:key="provider"
-        android:summary="@string/settings_provider_summary"
-        android:title="@string/settings_provider_title" />
-
 
     <CheckBoxPreference
         android:defaultValue="false"

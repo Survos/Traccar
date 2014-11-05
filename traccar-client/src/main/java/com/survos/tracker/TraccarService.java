@@ -44,7 +44,6 @@ public class TraccarService extends Service {
     private String address;
     private int port;
     private int interval;
-    private String provider;
     private int mStartHours, mStopHours;
     private boolean mIsTimeRestricted;
 
@@ -71,7 +70,6 @@ public class TraccarService extends Service {
         try {
             id = sharedPreferences.getString(TraccarActivity.KEY_ID, null);
             address = sharedPreferences.getString(TraccarActivity.KEY_ADDRESS, null);
-            provider = sharedPreferences.getString(TraccarActivity.KEY_PROVIDER, null);
             port = Integer.valueOf(sharedPreferences.getString(TraccarActivity.KEY_PORT, null));
             interval = Integer.valueOf(sharedPreferences.getString(TraccarActivity.KEY_INTERVAL, null));
             mStartHours = sharedPreferences.getInt(TraccarActivity.KEY_RESTRICT_START_TIME, 0);
@@ -86,7 +84,7 @@ public class TraccarService extends Service {
         clientController = new ClientController(this, address, port, mProtocol.createLoginMessage(id));
         clientController.start();
 
-        positionProvider = new PositionProvider(this, provider, interval * 1000, mStartHours,
+        positionProvider = new PositionProvider(this, interval * 1000, mStartHours,
                 mStopHours, mIsTimeRestricted, positionListener);
 
         positionProvider.startUpdates();
@@ -161,7 +159,7 @@ public class TraccarService extends Service {
 
                     interval = Integer.valueOf(sharedPreferences.getString(TraccarActivity.KEY_INTERVAL, null));
                     positionProvider.stopUpdates();
-                    positionProvider = new PositionProvider(TraccarService.this, provider, interval * 1000, mStartHours, mStopHours
+                    positionProvider = new PositionProvider(TraccarService.this, interval * 1000, mStartHours, mStopHours
                             , mIsTimeRestricted, positionListener);
                     positionProvider.startUpdates();
 
@@ -169,14 +167,6 @@ public class TraccarService extends Service {
 
                     id = sharedPreferences.getString(TraccarActivity.KEY_ID, null);
                     clientController.setNewLogin(mProtocol.createLoginMessage(id));
-
-                } else if (key.equals(TraccarActivity.KEY_PROVIDER)) {
-
-                    provider = sharedPreferences.getString(TraccarActivity.KEY_PROVIDER, null);
-                    positionProvider.stopUpdates();
-                    positionProvider = new PositionProvider(TraccarService.this, provider, interval * 1000, mStartHours, mStopHours
-                            , mIsTimeRestricted, positionListener);
-                    positionProvider.startUpdates();
 
                 }
             } catch (Exception error) {

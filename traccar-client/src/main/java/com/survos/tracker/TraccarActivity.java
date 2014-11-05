@@ -56,7 +56,6 @@ public class TraccarActivity extends PreferenceActivity implements View.OnClickL
     public static final String KEY_ADDRESS = "address";
     public static final String KEY_PORT = "port";
     public static final String KEY_INTERVAL = "interval";
-    public static final String KEY_PROVIDER = "provider";
     public static final String KEY_STATUS = "status";
     public static final String KEY_RESTRICT_TIME = "time_restrict";
     public static final String KEY_RESTRICT_START_TIME = "restrict_start_time";
@@ -127,9 +126,6 @@ public class TraccarActivity extends PreferenceActivity implements View.OnClickL
                 findPreference(KEY_INTERVAL).setSummary(sharedPreferences.getString(KEY_INTERVAL,
                         getResources().getString(R.string.settings_interval_summary)));
 
-            } else if (key.equals(KEY_PROVIDER)) {
-                findPreference(KEY_PROVIDER).setSummary(sharedPreferences.getString(KEY_PROVIDER,
-                        getResources().getString(R.string.settings_provider_summary)));
             }
         }
     };
@@ -254,9 +250,6 @@ public class TraccarActivity extends PreferenceActivity implements View.OnClickL
 
         findPreference(KEY_INTERVAL).setSummary(sharedPreferences.getString(KEY_INTERVAL,
                 getResources().getString(R.string.settings_interval_summary)));
-
-        findPreference(KEY_PROVIDER).setSummary(sharedPreferences.getString(KEY_PROVIDER,
-                getResources().getString(R.string.settings_provider_summary)));
 
 
         findPreference(KEY_ID).setSummary(sharedPreferences.getString(KEY_ID, id));
