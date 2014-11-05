@@ -37,6 +37,10 @@ import android.widget.TextView;
 
 import com.edmodo.rangebar.RangeBar;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.regex.Pattern;
 
 
@@ -147,20 +151,50 @@ public class TraccarActivity extends PreferenceActivity implements View.OnClickL
         rangebar.setTickHeight(25);
         rangebar.setBarWeight(6);
         rangebar.setBarColor(229999999);
-        int startTime = mSharedPreferences.getInt(KEY_RESTRICT_START_TIME, 1);
+        int startTime = mSharedPreferences.getInt(KEY_RESTRICT_START_TIME, 0);
         int stopTime = mSharedPreferences.getInt(KEY_RESTRICT_STOP_TIME, 24);
 
         rangebar.setThumbIndices(startTime - 1, stopTime - 1);
-        timeDifferenceText.setText((startTime) + " hours - " + (stopTime) + " hours");
+
+
+        String startString = "",stopString = "";
+        try {
+            DateFormat f1 = new SimpleDateFormat("HH");
+            Date d = f1.parse(startTime + "");
+            DateFormat f2 = new SimpleDateFormat("hh:mma");
+            stopString = f2.format(f1.parse(startTime + "")).toLowerCase();
+            startString = f2.format(d).toLowerCase();
+
+        }
+        catch (ParseException e) {
+
+        }
+
+        timeDifferenceText.setText(startString + " - " + stopString);
+
 
         rangebar.setOnRangeBarChangeListener(new RangeBar.OnRangeBarChangeListener() {
             @Override
             public void onIndexChangeListener(RangeBar rangeBar, int leftThumbIndex, int rightThumbIndex) {
-                timeDifferenceText.setText((leftThumbIndex + 1) + " hours - " + (rightThumbIndex + 1) + " hours");
+
                 mSharedPreferences.edit().putInt(KEY_RESTRICT_START_TIME, leftThumbIndex + 1).commit();
                 mSharedPreferences.edit().putInt(KEY_RESTRICT_STOP_TIME, rightThumbIndex + 1).commit();
-                findPreference(KEY_RESTRICT_TIME).setSummary((leftThumbIndex + 1) + " hours - " +
-                        (rightThumbIndex + 1) + " hours");
+
+                String startString = "",stopString = "";
+                try {
+                    DateFormat f1 = new SimpleDateFormat("HH");
+                    Date d = f1.parse(leftThumbIndex + "");
+                    DateFormat f2 = new SimpleDateFormat("hh:mma");
+                    stopString = f2.format(f1.parse(rightThumbIndex + 1 + "")).toLowerCase();
+                    startString = f2.format(d).toLowerCase();
+
+                }
+                catch (ParseException e) {
+
+                }
+
+                findPreference(KEY_RESTRICT_TIME).setSummary(startString + " - " + stopString);
+                timeDifferenceText.setText(startString + " - " + stopString);
 
             }
         });
@@ -229,9 +263,23 @@ public class TraccarActivity extends PreferenceActivity implements View.OnClickL
         findPreference(KEY_ADDRESS).setSummary(sharedPreferences.getString(KEY_ADDRESS, serverAddress));
 
         if (sharedPreferences.getBoolean(KEY_RESTRICT_TIME, false)) {
-            int startTime = sharedPreferences.getInt(KEY_RESTRICT_START_TIME, 1);
+            int startTime = sharedPreferences.getInt(KEY_RESTRICT_START_TIME, 0);
             int stopTime = sharedPreferences.getInt(KEY_RESTRICT_STOP_TIME, 24);
-            findPreference(KEY_RESTRICT_TIME).setSummary(startTime + " hours - " + stopTime + " hours");
+
+            String startString = "",stopString = "";
+            try {
+                DateFormat f1 = new SimpleDateFormat("HH");
+                Date d = f1.parse(startTime+1 + "");
+                DateFormat f2 = new SimpleDateFormat("hh:mma");
+                stopString = f2.format(f1.parse(stopTime+1 + "")).toLowerCase();
+                startString = f2.format(d).toLowerCase();
+
+            }
+            catch (ParseException e) {
+
+            }
+
+            findPreference(KEY_RESTRICT_TIME).setSummary(startString + " - " + stopString);
         } else {
             findPreference(KEY_RESTRICT_TIME).setSummary(getResources().getString(R.string.select_time_interval));
         }
