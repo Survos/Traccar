@@ -3,7 +3,6 @@
 
     <string name="app_name">Survos Tracker</string>
     <string name="app_logo">SurvosTracker</string>
-
     <string name="settings_id_title">E-mail Address</string>
     <string name="settings_address_title">Server address</string>
     <string name="settings_address_summary">Domain name or IP address</string>
@@ -21,20 +20,19 @@
     <string name="settings_extended_summary">Use Survos message format</string>
     <string name="settings_provider_title">Location provider</string>
     <string name="settings_provider_summary">Source of location data</string>
+
     <string-array name="settings_provider_names">
         <item>GPS provider</item>
         <item>Network provider</item>
         <item>Mixed provider</item>
     </string-array>
-    
+
     <string name="menu_status">Status</string>
     <string name="menu_about">About</string>
     <string name="menu_clear">Clear</string>
-    
     <string name="about_description">Real time GPS tracker for Android devices, . Compatible with Survos Tracking Server and other tracking systems.</string>
     <string name="about_license">This application is based on the free and open source Traccar Client for Android, source code is licensed under Apache License Version 2.0 and available on GitHub.</string>
     <string name="about_web">For more information visit\nwww.traccar.org/client, or \nwww.survos.com</string>
-
     <string name="status_service_create">Service created</string>
     <string name="status_service_start">Service started</string>
     <string name="status_service_destroy">Service destroyed</string>
@@ -44,9 +42,11 @@
     <string name="status_location_update">Location update</string>
     <string name="status_preference_update">Preference update</string>
     <string name="status_connectivity_change">Connectivity change</string>
-
     <string name="timedifference">0 hours - 24 hours</string>
     <string name="set">Set</string>
     <string name="select_time_interval">Select time interval</string>
+    <string name="title_activity_map_home">MapHomeActivity</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
 
 </resources>

@@ -98,7 +98,7 @@ public class Protocol implements DBInterface.AsyncDbQueryCallback{
         values.put(DatabaseColumns.SPEED,(l.getSpeed()*1.943844)+"");
 
         DBInterface.insertAsync(INSERT_LOCATION,null,null,TableLocationPoints.NAME,null,values,
-                false,this);
+                true,this);
 
 
 //        } else {
@@ -133,7 +133,7 @@ public class Protocol implements DBInterface.AsyncDbQueryCallback{
 
         if(!sharedPreferences.getBoolean(ClientController.KEY_CONNECTED,false)){
             DBInterface.insertAsync(INSERT_MESSAGE_CACHE,null,null, TableServerCache.NAME,null,valueCache,
-                    false,this);
+                    true,this);
         }
 
         return s.toString();

@@ -8,17 +8,23 @@
         revision="19.1.0"
         sha1="b935227af51c2df70e2be2cbfc5872ff2d726ed5"/>
     <item
-        dex="/Users/anshul1235/Traccar2/traccar-client/build/intermediates/pre-dexed/debug/support-annotations-20.0.0-99535b692bee9676dcf1ea108ababefd50b1dcde.jar"
-        jar="/Users/anshul1235/Desktop/data/adt-bundle-mac-x86_64-20140321/sdk/extras/android/m2repository/com/android/support/support-annotations/20.0.0/support-annotations-20.0.0.jar"
+        dex="/Users/anshul1235/Traccar2/traccar-client/build/intermediates/pre-dexed/debug/internal_impl-21.0.0-403c4c0de8f030983f2736a01d45b0b7c36ccc0d.jar"
+        jar="/Users/anshul1235/Traccar2/traccar-client/build/intermediates/exploded-aar/com.android.support/support-v4/21.0.0/libs/internal_impl-21.0.0.jar"
         jumboMode="false"
-        revision="19.1.0"
-        sha1="9d9013e9ff35fc3756411e62873c363c70c638fa"/>
+        revision="21.0.1"
+        sha1="1609e6d42d0480b0f4188e2c29f75388fa12a8f0"/>
     <item
-        dex="/Users/anshul1235/Traccar2/traccar-client/build/intermediates/pre-dexed/debug/classes-de4aaa68cfac9f70c5292db264976f38cf6d0495.jar"
-        jar="/Users/anshul1235/Traccar2/traccar-client/build/intermediates/exploded-aar/com.android.support/support-v4/20.0.0/classes.jar"
+        dex="/Users/anshul1235/Traccar2/traccar-client/build/intermediates/pre-dexed/debug/classes-5ac9f31cc0f83969fb05ba9b487384cd7b4213f6.jar"
+        jar="/Users/anshul1235/Traccar2/traccar-client/build/intermediates/exploded-aar/com.google.android.gms/play-services/6.1.11/classes.jar"
         jumboMode="false"
-        revision="19.1.0"
-        sha1="8694693636ab36910c8100ce527c258ff3ebece0"/>
+        revision="21.0.1"
+        sha1="0f700f6802ba1a1f1fa7ac26d5db0666a89d75a6"/>
+    <item
+        dex="/Users/anshul1235/Traccar2/traccar-client/build/intermediates/pre-dexed/debug/support-annotations-21.0.0-fad3a3277fe222f01560141ac11814fb3d2d9654.jar"
+        jar="/Users/anshul1235/Desktop/data/adt-bundle-mac-x86_64-20140321/sdk/extras/android/m2repository/com/android/support/support-annotations/21.0.0/support-annotations-21.0.0.jar"
+        jumboMode="false"
+        revision="21.0.1"
+        sha1="1a578b9607b36266c63d43a4fa0ab5664dbe911e"/>
     <item
         dex="/Users/anshul1235/Traccar2/traccar-client/build/intermediates/pre-dexed/debug/classes-5ac9f31cc0f83969fb05ba9b487384cd7b4213f6.jar"
         jar="/Users/anshul1235/Traccar2/traccar-client/build/intermediates/exploded-aar/com.google.android.gms/play-services/6.1.11/classes.jar"
@@ -26,10 +32,28 @@
         revision="19.1.0"
         sha1="0f700f6802ba1a1f1fa7ac26d5db0666a89d75a6"/>
     <item
-        dex="/Users/anshul1235/Traccar2/traccar-client/build/intermediates/pre-dexed/debug/internal_impl-20.0.0-6714b5615a3ee19a2014319d77b0bac7c6ff98c0.jar"
-        jar="/Users/anshul1235/Traccar2/traccar-client/build/intermediates/exploded-aar/com.android.support/support-v4/20.0.0/libs/internal_impl-20.0.0.jar"
+        dex="/Users/anshul1235/Traccar2/traccar-client/build/intermediates/pre-dexed/debug/classes-f37b9037e714579c0dbf19b644a45249c5284b4d.jar"
+        jar="/Users/anshul1235/Traccar2/traccar-client/build/intermediates/exploded-aar/com.android.support/appcompat-v7/21.0.0/classes.jar"
         jumboMode="false"
-        revision="19.1.0"
-        sha1="e40b3078e3fbd353c9f44da8df25a8fc0078209d"/>
+        revision="21.0.1"
+        sha1="95fd37732ec852e99f07eeb516a3650172f1d136"/>
+    <item
+        dex="/Users/anshul1235/Traccar2/traccar-client/build/intermediates/pre-dexed/debug/classes-a57f56da68b2479e06b1773e195ce1d82f8eb7c1.jar"
+        jar="/Users/anshul1235/Traccar2/traccar-client/build/intermediates/exploded-aar/com.edmodo/rangebar/1.0.0/classes.jar"
+        jumboMode="false"
+        revision="21.0.1"
+        sha1="b935227af51c2df70e2be2cbfc5872ff2d726ed5"/>
+    <item
+        dex="/Users/anshul1235/Traccar2/traccar-client/build/intermediates/pre-dexed/debug/classes-631a69889f01fc6f89c81a1c6ec64a56b32ba6ed.jar"
+        jar="/Users/anshul1235/Traccar2/traccar-client/build/intermediates/exploded-aar/com.android.support/support-v4/21.0.0/classes.jar"
+        jumboMode="false"
+        revision="21.0.1"
+        sha1="686344a780033e4ba22b926cd225f8d4941247e6"/>
+    <item
+        dex="/Users/anshul1235/Traccar2/traccar-client/build/intermediates/pre-dexed/debug/classes-9728840ab5da810736dfa1512936cd1ed50204af.jar"
+        jar="/Users/anshul1235/Traccar2/traccar-client/build/intermediates/exploded-aar/com.android.support/cardview-v7/21.0.0/classes.jar"
+        jumboMode="false"
+        revision="21.0.1"
+        sha1="7d2525cba8ed61fff102977caed964fc22061e34"/>
 
 </pre-dex-items>
