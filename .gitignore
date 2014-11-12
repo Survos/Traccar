@@ -3,5 +3,7 @@
 /.idea/workspace.xml
 /build
 /build/intermediates
+/Traccar2.iml
+/traccar-client-android.iml
 
 .DS_Store
