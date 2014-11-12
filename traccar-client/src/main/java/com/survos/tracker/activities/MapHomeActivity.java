@@ -8,10 +8,13 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.Switch;
+import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -31,13 +34,20 @@ import com.survos.tracker.data.Logger;
 import com.survos.tracker.data.SQLiteLoader;
 import com.survos.tracker.data.TableLocationPoints;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 
 public class MapHomeActivity extends ActionBarActivity implements DBInterface.AsyncDbQueryCallback,
-        LoaderManager.LoaderCallbacks<Cursor>{
+        LoaderManager.LoaderCallbacks<Cursor> {
 
     private GoogleMap mGmap;
     private Switch mSwitch;
     private SharedPreferences mSharedPreferences;
+
+    private TextView mLocationText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +61,13 @@ public class MapHomeActivity extends ActionBarActivity implements DBInterface.As
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
         mSwitch = (Switch) findViewById(R.id.location_switch);
+        mLocationText = (TextView) findViewById(R.id.location_text);
 
+        if (mSharedPreferences.getBoolean(TraccarActivity.KEY_STATUS, false)) {
+            mSwitch.setChecked(true);
+        } else {
+            mSwitch.setChecked(false);
+        }
         mSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -122,6 +138,11 @@ public class MapHomeActivity extends ActionBarActivity implements DBInterface.As
         Logger.d("CURSOR", cursor.getCount() + "");
         Marker[] markers = new Marker[cursor.getCount()];
         for (int i = 0; i < cursor.getCount(); i++) {
+            if (i + 1 == cursor.getCount()) {
+                Log.d("timee", cursor.getString(cursor.getColumnIndex(DatabaseColumns.TIME)));
+                mLocationText.setText("Last location updated at " +
+                        cursor.getString(cursor.getColumnIndex(DatabaseColumns.TIME)));
+            }
             markers[i] = mGmap.addMarker(new MarkerOptions()
                     .position(new LatLng(Double.parseDouble(cursor.getString(cursor.getColumnIndex(DatabaseColumns.LATITUDE))),
                             Double.parseDouble(cursor.getString(cursor.getColumnIndex(DatabaseColumns.LONGITUDE)))))
@@ -132,6 +153,7 @@ public class MapHomeActivity extends ActionBarActivity implements DBInterface.As
 //                    .title(cursor.getString(cursor.getColumnIndex(DatabaseColumns.TIME))+" provider : "+
 //
 //                            cursor.getString(cursor.getColumnIndex(DatabaseColumns.PROVIDER)));
+            cursor.moveToNext();
 
         }
         LatLngBounds.Builder builder = new LatLngBounds.Builder();
@@ -145,14 +167,13 @@ public class MapHomeActivity extends ActionBarActivity implements DBInterface.As
         try {
             mGmap.moveCamera(cu);
 
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
     }
 
-    private void loadLocationPoints(){
+    private void loadLocationPoints() {
         getSupportLoaderManager().restartLoader(Constants.LoaderIds.LOAD_LOCATION, null, MapHomeActivity.this);
     }
 
@@ -162,7 +183,7 @@ public class MapHomeActivity extends ActionBarActivity implements DBInterface.As
 
 
             return new SQLiteLoader(this, false, TableLocationPoints.NAME, null,
-                    null, null, null, null,null, null);
+                    null, null, null, null, null, null);
         } else {
             return null;
         }
@@ -176,39 +197,48 @@ public class MapHomeActivity extends ActionBarActivity implements DBInterface.As
 
             cursor.moveToFirst();
 
-            mGmap.clear();
-
+            DateFormat format = DateFormat.getTimeInstance(DateFormat.SHORT);
             Logger.d("CURSOR", cursor.getCount() + "");
             Marker[] markers = new Marker[cursor.getCount()];
             for (int i = 0; i < cursor.getCount(); i++) {
-                markers[i] = mGmap.addMarker(new MarkerOptions()
-                        .position(new LatLng(Double.parseDouble(cursor.getString(cursor.getColumnIndex(DatabaseColumns.LATITUDE))),
-                                Double.parseDouble(cursor.getString(cursor.getColumnIndex(DatabaseColumns.LONGITUDE)))))
-                        .title(cursor.getString(cursor.getColumnIndex(DatabaseColumns.TIME)) + " provider : " +
 
-                                cursor.getString(cursor.getColumnIndex(DatabaseColumns.PROVIDER))));
+                if (i + 1 == cursor.getCount()) {
+                    mLocationText.setText("Last location updated at " +
+                                    getDate(Long.parseLong(cursor.getString(cursor.getColumnIndex(DatabaseColumns.TIME))),"hh:mma"));
+
+                    mGmap.addMarker(new MarkerOptions()
+                            .position(new LatLng(Double.parseDouble(cursor.getString(cursor.getColumnIndex(DatabaseColumns.LATITUDE))),
+                                    Double.parseDouble(cursor.getString(cursor.getColumnIndex(DatabaseColumns.LONGITUDE)))))
+                            .title(cursor.getString(cursor.getColumnIndex(DatabaseColumns.TIME)) + " provider : " +
+
+                                    cursor.getString(cursor.getColumnIndex(DatabaseColumns.PROVIDER))));
+                }
+
 //            markers[i]
 //                    .title(cursor.getString(cursor.getColumnIndex(DatabaseColumns.TIME))+" provider : "+
 //
 //                            cursor.getString(cursor.getColumnIndex(DatabaseColumns.PROVIDER)));
+                cursor.moveToNext();
 
             }
-            LatLngBounds.Builder builder = new LatLngBounds.Builder();
-            for (Marker marker : markers) {
-                builder.include(marker.getPosition());
-            }
-            LatLngBounds bounds = builder.build();
 
-            CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, 0);
-
-            try {
-                mGmap.moveCamera(cu);
-
-            }
-            catch (Exception e){
-                e.printStackTrace();
-            }
         }
+    }
+    /**
+     * Return date in specified format.
+     * @param milliSeconds Date in milliseconds
+     * @param dateFormat Date format
+     * @return String representing date in specified format
+     */
+    public static String getDate(long milliSeconds, String dateFormat)
+    {
+        // Create a DateFormatter object for displaying date in specified format.
+        SimpleDateFormat formatter = new SimpleDateFormat(dateFormat);
+
+        // Create a calendar object that will convert the date and time value in milliseconds to date.
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(milliSeconds);
+        return formatter.format(calendar.getTime());
     }
 
     @Override

@@ -16,6 +16,7 @@
 package com.survos.tracker;
 
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Formatter;
 import java.util.Locale;
 import java.util.TimeZone;
@@ -69,6 +70,8 @@ public class Protocol implements DBInterface.AsyncDbQueryCallback{
         Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"), Locale.ENGLISH);
         calendar.setTimeInMillis(l.getTime());
 
+        Date mDate = new Date();
+
        // if (extended) {
 
             f.format("%1$tY%1$tm%1$td%1$tH%1$tM%1$tS.%1$tL,A,", calendar);
@@ -76,6 +79,7 @@ public class Protocol implements DBInterface.AsyncDbQueryCallback{
             //TODO add to the format
             Log.d("provider",l.getProvider());
             Log.d("accuracy",l.getAccuracy()+"");
+            Log.d("time",l.getTime()+"");
 
 
             f.format("%.6f,%.6f,", l.getLatitude(), l.getLongitude());
@@ -87,6 +91,7 @@ public class Protocol implements DBInterface.AsyncDbQueryCallback{
 
         ContentValues values = new ContentValues();
         values.put(DatabaseColumns.ID,l.getTime()+"");
+        values.put(DatabaseColumns.TIME,l.getTime()+"");
         values.put(DatabaseColumns.ACCURACY,l.getAccuracy()+"");
         values.put(DatabaseColumns.ALTITUDE,l.getAltitude()+"");
         values.put(DatabaseColumns.BATTERY_PERCENTAGE,battery+"");
