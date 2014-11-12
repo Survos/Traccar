@@ -156,19 +156,22 @@ public class MapHomeActivity extends ActionBarActivity implements DBInterface.As
             cursor.moveToNext();
 
         }
-        LatLngBounds.Builder builder = new LatLngBounds.Builder();
-        for (Marker marker : markers) {
-            builder.include(marker.getPosition());
-        }
-        LatLngBounds bounds = builder.build();
 
-        CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, 0);
+        if(cursor.getCount()!=0) {
+            LatLngBounds.Builder builder = new LatLngBounds.Builder();
+            for (Marker marker : markers) {
+                builder.include(marker.getPosition());
+            }
+            LatLngBounds bounds = builder.build();
 
-        try {
-            mGmap.moveCamera(cu);
+            CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, 0);
 
-        } catch (Exception e) {
-            e.printStackTrace();
+            try {
+                mGmap.moveCamera(cu);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
     }
