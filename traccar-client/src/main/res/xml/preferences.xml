@@ -31,12 +31,5 @@
         android:key="time_restrict"
         android:title="@string/settings_restrict_by_time" />
 
-    <CheckBoxPreference
-        android:defaultValue="false"
-        android:visibility="gone"
-        android:key="status"
-        android:summaryOff="@string/settings_status_off_summary"
-        android:summaryOn="@string/settings_status_on_summary"
-        android:title="@string/settings_status_title" />
 
 </PreferenceScreen>

@@ -150,7 +150,7 @@ public class TraccarActivity extends PreferenceActivity implements View.OnClickL
         int startTime = mSharedPreferences.getInt(KEY_RESTRICT_START_TIME, 0);
         int stopTime = mSharedPreferences.getInt(KEY_RESTRICT_STOP_TIME, 24);
 
-        rangebar.setThumbIndices(startTime - 1, stopTime - 1);
+        rangebar.setThumbIndices(startTime , stopTime - 1);
 
 
         String startString = "",stopString = "";

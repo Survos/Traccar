@@ -31,14 +31,5 @@
         android:key="time_restrict"
         android:title="@string/settings_restrict_by_time" />
 
-    <SwitchPreference
-        android:defaultValue="false"
-        android:visibility="gone"
-        android:key="status"
-        android:summaryOff="@string/settings_status_off_summary"
-        android:summaryOn="@string/settings_status_on_summary"
-        android:switchTextOff="@string/settings_status_off"
-        android:switchTextOn="@string/settings_status_on"
-        android:title="@string/settings_status_title" />
 
 </PreferenceScreen>
