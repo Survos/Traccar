@@ -20,12 +20,15 @@ import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.survos.tracker.AboutActivity;
 import com.survos.tracker.Constants.Constants;
 import com.survos.tracker.R;
+import com.survos.tracker.StatusActivity;
 import com.survos.tracker.TraccarActivity;
 import com.survos.tracker.TraccarService;
 import com.survos.tracker.data.DBInterface;
@@ -55,7 +58,7 @@ public class MapHomeActivity extends ActionBarActivity implements DBInterface.As
         setContentView(R.layout.activity_map_home);
 
         if (savedInstanceState == null) {
-            mGmap = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
+            mGmap = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map)).getMap();
         }
 
         mGmap.setOnMapLoadedCallback(this);
@@ -109,6 +112,20 @@ public class MapHomeActivity extends ActionBarActivity implements DBInterface.As
             final Intent settings = new Intent(this,
                     TraccarActivity.class);
             startActivity(settings);
+            return true;
+        }
+
+        else  if (id == R.id.status) {
+
+            startActivity(new Intent(this, StatusActivity.class));
+
+            return true;
+        }
+        else  if (id == R.id.about) {
+
+
+            startActivity(new Intent(this, AboutActivity.class));
+
             return true;
         }
 
