@@ -41,7 +41,7 @@ import java.util.Date;
 
 
 public class MapHomeActivity extends ActionBarActivity implements DBInterface.AsyncDbQueryCallback,
-        LoaderManager.LoaderCallbacks<Cursor> {
+        LoaderManager.LoaderCallbacks<Cursor>,GoogleMap.OnMapLoadedCallback {
 
     private GoogleMap mGmap;
     private Switch mSwitch;
@@ -56,8 +56,9 @@ public class MapHomeActivity extends ActionBarActivity implements DBInterface.As
 
         if (savedInstanceState == null) {
             mGmap = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
-            loadLocationPoints();
         }
+
+        mGmap.setOnMapLoadedCallback(this);
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
         mSwitch = (Switch) findViewById(R.id.location_switch);
@@ -81,8 +82,7 @@ public class MapHomeActivity extends ActionBarActivity implements DBInterface.As
             }
         });
 
-        DBInterface.queryAsync(Constants.QueryTokens.QUERY_LOCATION_POINTS, null, null, true, TableLocationPoints.NAME,
-                null, null, null, null, null, null, "30", this);
+
 
 
     }
@@ -154,6 +154,7 @@ public class MapHomeActivity extends ActionBarActivity implements DBInterface.As
 //
 //                            cursor.getString(cursor.getColumnIndex(DatabaseColumns.PROVIDER)));
             cursor.moveToNext();
+
 
         }
 
@@ -246,6 +247,14 @@ public class MapHomeActivity extends ActionBarActivity implements DBInterface.As
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
+
+    }
+
+    @Override
+    public void onMapLoaded() {
+        DBInterface.queryAsync(Constants.QueryTokens.QUERY_LOCATION_POINTS, null, null, true, TableLocationPoints.NAME,
+                null, null, null, null, null, null, "30", this);
+        loadLocationPoints();
 
     }
 }
