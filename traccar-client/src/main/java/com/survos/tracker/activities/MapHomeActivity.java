@@ -115,12 +115,12 @@ public class MapHomeActivity extends ActionBarActivity implements DBInterface.As
             return true;
         }
 
-        else  if (id == R.id.status) {
-
-            startActivity(new Intent(this, StatusActivity.class));
-
-            return true;
-        }
+//        else  if (id == R.id.status) {
+//
+//            startActivity(new Intent(this, StatusActivity.class));
+//
+//            return true;
+//        }
         else  if (id == R.id.about) {
 
 
