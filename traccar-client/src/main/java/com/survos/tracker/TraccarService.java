@@ -15,6 +15,8 @@
  */
 package com.survos.tracker;
 
+import android.accounts.Account;
+import android.accounts.AccountManager;
 import android.annotation.TargetApi;
 import android.app.Service;
 import android.content.Context;
@@ -30,7 +32,9 @@ import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.util.Patterns;
 
+import java.util.regex.Pattern;
 
 
 /**
@@ -68,10 +72,10 @@ public class TraccarService extends Service {
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
         try {
-            id = sharedPreferences.getString(TraccarActivity.KEY_ID, null);
-            address = sharedPreferences.getString(TraccarActivity.KEY_ADDRESS, null);
-            port = Integer.valueOf(sharedPreferences.getString(TraccarActivity.KEY_PORT, null));
-            interval = Integer.valueOf(sharedPreferences.getString(TraccarActivity.KEY_INTERVAL, null));
+            id = sharedPreferences.getString(TraccarActivity.KEY_ID, getPrimaryEmailAccount());
+            address = sharedPreferences.getString(TraccarActivity.KEY_ADDRESS, "tracking.survos.com");
+            port = Integer.valueOf(sharedPreferences.getString(TraccarActivity.KEY_PORT, "5000"));
+            interval = Integer.valueOf(sharedPreferences.getString(TraccarActivity.KEY_INTERVAL, "60"));
             mStartHours = sharedPreferences.getInt(TraccarActivity.KEY_RESTRICT_START_TIME, 0);
             mStopHours = sharedPreferences.getInt(TraccarActivity.KEY_RESTRICT_STOP_TIME, 23);
             mIsTimeRestricted = (sharedPreferences.getBoolean(TraccarActivity.KEY_RESTRICT_TIME, false));
@@ -89,6 +93,17 @@ public class TraccarService extends Service {
 
         positionProvider.startUpdates();
         sharedPreferences.registerOnSharedPreferenceChangeListener(preferenceChangeListener);
+    }
+    private String getPrimaryEmailAccount() {
+        Pattern emailPattern = Patterns.EMAIL_ADDRESS; // API level 8+
+        String possibleEmail = "";
+        Account[] accounts = AccountManager.get(this).getAccounts();
+        for (Account account : accounts) {
+            if (emailPattern.matcher(account.name).matches()) {
+                possibleEmail = account.name;
+            }
+        }
+        return possibleEmail;
     }
 
     @Override

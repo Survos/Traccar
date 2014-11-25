@@ -75,22 +75,27 @@ public class PositionProvider {
     }
 
     public void startUpdates() {
-        if (useFine) {
-            try {
-                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, period, 0, fineLocationListener);
-            } catch (Exception ex) {
+//        if (useFine) {
+//            try {
+//                locationManager.requestLocationUpdates(LocationManager.PASSIVE_PROVIDER, period, 0, fineLocationListener);
+//            } catch (Exception ex) {
+//
+//            }
+//        }
+//        if (useCoarse) {
+//            try {
+//                locationManager.requestLocationUpdates(LocationManager.PASSIVE_PROVIDER, period, 0, coarseLocationListener);
+//            } catch (Exception ex) {
+//
+//            }
+//        }
 
-            }
-        }
-        if (useCoarse) {
-            try {
-                locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, period, 0, coarseLocationListener);
-            } catch (Exception ex) {
+        locationManager.requestLocationUpdates(LocationManager.PASSIVE_PROVIDER, period, 0, coarseLocationListener);
 
-            }
-        }
         handler.postDelayed(updateTask, period);
     }
+
+
 
     public void stopUpdates() {
         handler.removeCallbacks(updateTask);
@@ -148,8 +153,8 @@ public class PositionProvider {
 
         @Override
         public void run() {
-            if (useFine && tryProvider(LocationManager.GPS_PROVIDER)) {
-            } else if (useCoarse && tryProvider(LocationManager.NETWORK_PROVIDER)) {
+            if (useFine && tryProvider(LocationManager.PASSIVE_PROVIDER)) {
+            } else if (useCoarse && tryProvider(LocationManager.PASSIVE_PROVIDER)) {
             } else {
                 listener.onPositionUpdate(null);
             }
