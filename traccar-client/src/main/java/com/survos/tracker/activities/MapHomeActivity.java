@@ -44,26 +44,29 @@ import java.util.Date;
 public class MapHomeActivity extends ActionBarActivity implements DBInterface.AsyncDbQueryCallback,
         LoaderManager.LoaderCallbacks<Cursor>,GoogleMap.OnMapLoadedCallback {
 
-    private GoogleMap mGmap;
+    //private GoogleMap mGmap;
     private Switch mSwitch;
     private SharedPreferences mSharedPreferences;
 
     private TextView mLocationText;
+
+    private static TextView mStateText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map_home);
 
-        if (savedInstanceState == null) {
-            mGmap = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map)).getMap();
-        }
-
-        mGmap.setOnMapLoadedCallback(this);
+//        if (savedInstanceState == null) {
+//            mGmap = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map)).getMap();
+//        }
+//
+//        mGmap.setOnMapLoadedCallback(this);
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
         mSwitch = (Switch) findViewById(R.id.location_switch);
         mLocationText = (TextView) findViewById(R.id.location_text);
+        mStateText = (TextView) findViewById(R.id.state);
 
         if (mSharedPreferences.getBoolean(TraccarActivity.KEY_STATUS, false)) {
             mSwitch.setChecked(true);
@@ -83,10 +86,19 @@ public class MapHomeActivity extends ActionBarActivity implements DBInterface.As
             }
         });
 
+        loadLocationPoints();
 
 
 
     }
+
+    public static void addMessage(String message) {
+        Log.i(TraccarActivity.LOG_TAG, message);
+        DateFormat format = DateFormat.getTimeInstance(DateFormat.SHORT);
+        message = format.format(new Date()) + " - " + message;
+        mStateText.setText(message);
+    }
+
 
 
     @Override
@@ -150,45 +162,45 @@ public class MapHomeActivity extends ActionBarActivity implements DBInterface.As
 
         cursor.moveToFirst();
 
-        Logger.d("CURSOR", cursor.getCount() + "");
-        Marker[] markers = new Marker[cursor.getCount()];
-        for (int i = 0; i < cursor.getCount(); i++) {
-            if (i + 1 == cursor.getCount()) {
-                Log.d("timee", cursor.getString(cursor.getColumnIndex(DatabaseColumns.TIME)));
-                mLocationText.setText("Last location updated at " +
-                        cursor.getString(cursor.getColumnIndex(DatabaseColumns.TIME)));
-            }
-            markers[i] = mGmap.addMarker(new MarkerOptions()
-                    .position(new LatLng(Double.parseDouble(cursor.getString(cursor.getColumnIndex(DatabaseColumns.LATITUDE))),
-                            Double.parseDouble(cursor.getString(cursor.getColumnIndex(DatabaseColumns.LONGITUDE)))))
-                    .title(cursor.getString(cursor.getColumnIndex(DatabaseColumns.TIME)) + " provider : " +
-
-                            cursor.getString(cursor.getColumnIndex(DatabaseColumns.PROVIDER))));
-//            markers[i]
-//                    .title(cursor.getString(cursor.getColumnIndex(DatabaseColumns.TIME))+" provider : "+
+//        Logger.d("CURSOR", cursor.getCount() + "");
+//        Marker[] markers = new Marker[cursor.getCount()];
+//        for (int i = 0; i < cursor.getCount(); i++) {
+//            if (i + 1 == cursor.getCount()) {
+//                Log.d("timee", cursor.getString(cursor.getColumnIndex(DatabaseColumns.TIME)));
+//                mLocationText.setText("Last location updated at " +
+//                        cursor.getString(cursor.getColumnIndex(DatabaseColumns.TIME)));
+//            }
+//            markers[i] = mGmap.addMarker(new MarkerOptions()
+//                    .position(new LatLng(Double.parseDouble(cursor.getString(cursor.getColumnIndex(DatabaseColumns.LATITUDE))),
+//                            Double.parseDouble(cursor.getString(cursor.getColumnIndex(DatabaseColumns.LONGITUDE)))))
+//                    .title(cursor.getString(cursor.getColumnIndex(DatabaseColumns.TIME)) + " provider : " +
 //
-//                            cursor.getString(cursor.getColumnIndex(DatabaseColumns.PROVIDER)));
-            cursor.moveToNext();
+//                            cursor.getString(cursor.getColumnIndex(DatabaseColumns.PROVIDER))));
+////            markers[i]
+////                    .title(cursor.getString(cursor.getColumnIndex(DatabaseColumns.TIME))+" provider : "+
+////
+////                            cursor.getString(cursor.getColumnIndex(DatabaseColumns.PROVIDER)));
+//            cursor.moveToNext();
 
 
-        }
-
-        if(cursor.getCount()!=0) {
-            LatLngBounds.Builder builder = new LatLngBounds.Builder();
-            for (Marker marker : markers) {
-                builder.include(marker.getPosition());
-            }
-            LatLngBounds bounds = builder.build();
-
-            CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, 0);
-
-            try {
-                mGmap.moveCamera(cu);
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
+//        }
+//
+//        if(cursor.getCount()!=0) {
+//            LatLngBounds.Builder builder = new LatLngBounds.Builder();
+//            for (Marker marker : markers) {
+//                builder.include(marker.getPosition());
+//            }
+//            LatLngBounds bounds = builder.build();
+//
+//            CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, 0);
+//
+//            try {
+//                mGmap.moveCamera(cu);
+//
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//        }
 
     }
 
@@ -199,7 +211,6 @@ public class MapHomeActivity extends ActionBarActivity implements DBInterface.As
     @Override
     public Loader<Cursor> onCreateLoader(int loaderId, Bundle bundle) {
         if (loaderId == Constants.LoaderIds.LOAD_LOCATION) {
-
 
             return new SQLiteLoader(this, false, TableLocationPoints.NAME, null,
                     null, null, null, null, null, null);
@@ -223,14 +234,17 @@ public class MapHomeActivity extends ActionBarActivity implements DBInterface.As
 
                 if (i + 1 == cursor.getCount()) {
                     mLocationText.setText("Last location updated at " +
-                                    getDate(Long.parseLong(cursor.getString(cursor.getColumnIndex(DatabaseColumns.TIME))),"hh:mma"));
+                            getDate(Long.parseLong(cursor.getString(cursor.getColumnIndex(DatabaseColumns.TIME))),
+                                    "hh:mma")+"\n\nLatitude : "+cursor.getString(cursor.getColumnIndex(DatabaseColumns.LATITUDE))+"\nLongitude : "+
+                            cursor.getString(cursor.getColumnIndex(DatabaseColumns.LONGITUDE)));
 
-                    mGmap.addMarker(new MarkerOptions()
-                            .position(new LatLng(Double.parseDouble(cursor.getString(cursor.getColumnIndex(DatabaseColumns.LATITUDE))),
-                                    Double.parseDouble(cursor.getString(cursor.getColumnIndex(DatabaseColumns.LONGITUDE)))))
-                            .title(cursor.getString(cursor.getColumnIndex(DatabaseColumns.TIME)) + " provider : " +
-
-                                    cursor.getString(cursor.getColumnIndex(DatabaseColumns.PROVIDER))));
+//                    mGmap.addMarker(new MarkerOptions()
+//                            .position(new LatLng(Double.parseDouble(cursor.getString(cursor.getColumnIndex(DatabaseColumns.LATITUDE))),
+//                                    Double.parseDouble(cursor.getString(cursor.getColumnIndex(DatabaseColumns.LONGITUDE)))))
+//                            .title(cursor.getString(cursor.getColumnIndex(DatabaseColumns.TIME)) + " provider : " +
+//
+//                                    cursor.getString(cursor.getColumnIndex(DatabaseColumns.PROVIDER))));
+//                }
                 }
 
 //            markers[i]

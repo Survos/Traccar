@@ -24,6 +24,8 @@ import android.net.ConnectivityManager;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 
+import com.survos.tracker.activities.MapHomeActivity;
+
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -125,10 +127,14 @@ public class ClientController implements Connection.ConnectionHandler {
     public void onConnected(boolean result) {
         if (result) {
             StatusActivity.addMessage(context.getString(R.string.status_connection_success));
+            MapHomeActivity.addMessage(context.getString(R.string.status_connection_success));
+
             mSharedPreferences.edit().putBoolean(KEY_CONNECTED, true).commit();
             connection.send(loginMessage);
         } else {
             StatusActivity.addMessage(context.getString(R.string.status_connection_fail));
+            MapHomeActivity.addMessage(context.getString(R.string.status_connection_fail));
+
 
             mSharedPreferences.edit().putBoolean(KEY_CONNECTED, false).commit();
 
@@ -145,6 +151,8 @@ public class ClientController implements Connection.ConnectionHandler {
             }
         } else {
             StatusActivity.addMessage(context.getString(R.string.status_send_fail));
+            MapHomeActivity.addMessage(context.getString(R.string.status_send_fail));
+
             delayedReconnect();
         }
     }

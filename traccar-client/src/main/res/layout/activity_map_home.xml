@@ -10,28 +10,27 @@
     tools:context="com.survos.tracker.activities.MapHomeActivity">
 
 
+    <!--<android.support.v7.widget.CardView-->
+        <!--android:orientation="vertical"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--app:cardCornerRadius="5dp"-->
+        <!--app:cardPreventCornerOverlap="true"-->
+        <!--app:cardUseCompatPadding="true"-->
+        <!--android:id="@+id/view">-->
+
+        <!--<fragment xmlns:android="http://schemas.android.com/apk/res/android"-->
+            <!--android:id="@+id/map"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="300dp"-->
+            <!--class="com.google.android.gms.maps.SupportMapFragment"-->
+            <!--/>-->
+
+    <!--</android.support.v7.widget.CardView>-->
+
     <android.support.v7.widget.CardView
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:cardCornerRadius="5dp"
-        app:cardPreventCornerOverlap="true"
-        app:cardUseCompatPadding="true"
-        android:id="@+id/view">
-
-        <fragment xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/map"
-            android:layout_width="match_parent"
-            android:layout_height="300dp"
-            class="com.google.android.gms.maps.SupportMapFragment"
-            />
-
-    </android.support.v7.widget.CardView>
-
-    <android.support.v7.widget.CardView
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_below="@+id/view"
         android:layout_height="match_parent"
         app:cardCornerRadius="5dp"
         app:cardPreventCornerOverlap="true"
@@ -44,6 +43,7 @@
             <Switch
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="100dp"
                 android:textOn="Stop"
                 android:textOff="Start"
                 android:text="Location Service"
@@ -59,6 +59,24 @@
                 android:id="@+id/location_text"
                 android:layout_centerHorizontal="true"
                 android:layout_below="@+id/location_switch" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:id="@+id/stateHeading"
+                android:layout_centerHorizontal="true"
+                android:text="Status"
+                android:textStyle="bold|italic"
+                android:layout_below="@+id/location_text" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:id="@+id/state"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@+id/stateHeading" />
 
         </RelativeLayout>
 

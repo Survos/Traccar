@@ -34,6 +34,8 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import android.util.Patterns;
 
+import com.survos.tracker.activities.MapHomeActivity;
+
 import java.util.regex.Pattern;
 
 
@@ -62,6 +64,8 @@ public class TraccarService extends Service {
     @Override
     public void onCreate() {
         StatusActivity.addMessage(getString(R.string.status_service_create));
+        MapHomeActivity.addMessage(getString(R.string.status_service_create));
+
 
         PowerManager powerManager = (PowerManager) getSystemService(Context.POWER_SERVICE);
         wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, getClass().getName());
@@ -114,6 +118,7 @@ public class TraccarService extends Service {
     @Override
     public void onDestroy() {
         StatusActivity.addMessage(getString(R.string.status_service_destroy));
+        MapHomeActivity.addMessage(getString(R.string.status_service_destroy));
 
         if (sharedPreferences != null) {
             sharedPreferences.unregisterOnSharedPreferenceChangeListener(preferenceChangeListener);
@@ -148,7 +153,10 @@ public class TraccarService extends Service {
         public void onPositionUpdate(Location location) {
             if (location != null) {
                 StatusActivity.addMessage(getString(R.string.status_location_update));
+                MapHomeActivity.addMessage(getString(R.string.status_location_update));
+
                 clientController.setNewLocation(mProtocol.createLocationMessage( location, getBatteryLevel()));
+
             }
         }
 
@@ -159,6 +167,8 @@ public class TraccarService extends Service {
         @Override
         public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
             StatusActivity.addMessage(getString(R.string.status_preference_update));
+            MapHomeActivity.addMessage(getString(R.string.status_preference_update));
+
             try {
                 if (key.equals(TraccarActivity.KEY_ADDRESS)) {
 
