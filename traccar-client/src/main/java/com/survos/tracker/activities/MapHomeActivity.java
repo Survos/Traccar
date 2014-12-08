@@ -93,13 +93,27 @@ public class MapHomeActivity extends ActionBarActivity implements DBInterface.As
     }
 
     public static void addMessage(String message) {
-        Log.i(TraccarActivity.LOG_TAG, message);
-        DateFormat format = DateFormat.getTimeInstance(DateFormat.SHORT);
-        message = format.format(new Date()) + " - " + message;
-        mStateText.setText(message);
+        if(Constants.mainActivityIsOpen()) {
+            Log.i(TraccarActivity.LOG_TAG, message);
+            DateFormat format = DateFormat.getTimeInstance(DateFormat.SHORT);
+            message = format.format(new Date()) + " - " + message;
+            mStateText.setText(message);
+        }
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
 
+        Constants.setMainActivityIsOpen(true);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Constants.setMainActivityIsOpen(false);
+
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
