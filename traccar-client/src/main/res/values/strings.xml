@@ -52,4 +52,6 @@
     <string name="agreement">Agreement</string>
     <string name="agree">I agree</string>
     <string name="disagree">Disagree</string>
+    <string name="title_activity_splash">Splash</string>
+
 </resources>
