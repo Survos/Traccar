@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Survos Tracker</string>
-    <string name="app_logo">SurvosTracker</string>
+    <string name="app_name">CHAT</string>
+    <string name="app_logo">CHAT</string>
     <string name="settings_id_title">E-mail Address</string>
     <string name="settings_address_title">Server address</string>
     <string name="settings_address_summary">Domain name or IP address</string>
@@ -42,11 +42,14 @@
     <string name="status_location_update">Location update</string>
     <string name="status_preference_update">Preference update</string>
     <string name="status_connectivity_change">Connectivity change</string>
+    <string name="connection_active">Connection Active</string>
     <string name="timedifference">0 hours - 24 hours</string>
     <string name="set">Set</string>
     <string name="select_time_interval">Select time interval</string>
     <string name="title_activity_map_home">MapHomeActivity</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
-
+    <string name="agreement">Agreement</string>
+    <string name="agree">I agree</string>
+    <string name="disagree">Disagree</string>
 </resources>

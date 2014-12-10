@@ -1,5 +1,8 @@
 package com.survos.tracker.activities;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -34,6 +37,7 @@ import com.survos.tracker.data.DatabaseColumns;
 import com.survos.tracker.data.Logger;
 import com.survos.tracker.data.SQLiteLoader;
 import com.survos.tracker.data.TableLocationPoints;
+import com.survos.tracker.dialogs.AgreementDialog;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -42,7 +46,7 @@ import java.util.Date;
 
 
 public class MapHomeActivity extends ActionBarActivity implements DBInterface.AsyncDbQueryCallback,
-        LoaderManager.LoaderCallbacks<Cursor>,GoogleMap.OnMapLoadedCallback {
+        LoaderManager.LoaderCallbacks<Cursor>,GoogleMap.OnMapLoadedCallback,DialogInterface.OnClickListener {
 
     //private GoogleMap mGmap;
     private Switch mSwitch;
@@ -51,6 +55,13 @@ public class MapHomeActivity extends ActionBarActivity implements DBInterface.As
     private TextView mLocationText;
 
     private static TextView mStateText;
+
+
+    /**
+     * Reference to the Dialog Fragment for selecting the chat options
+     */
+    private AgreementDialog mAgreementDialog;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +73,8 @@ public class MapHomeActivity extends ActionBarActivity implements DBInterface.As
 //        }
 //
 //        mGmap.setOnMapLoadedCallback(this);
+
+
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
         mSwitch = (Switch) findViewById(R.id.location_switch);
@@ -70,6 +83,7 @@ public class MapHomeActivity extends ActionBarActivity implements DBInterface.As
 
         if (mSharedPreferences.getBoolean(TraccarActivity.KEY_STATUS, false)) {
             mSwitch.setChecked(true);
+            addMessage(getResources().getString(R.string.connection_active));
         } else {
             mSwitch.setChecked(false);
         }
@@ -85,6 +99,11 @@ public class MapHomeActivity extends ActionBarActivity implements DBInterface.As
                 }
             }
         });
+
+        if(mSharedPreferences.getBoolean("appOpenFirstTime",true)){
+            showAgreementDialog();
+
+        }
 
         loadLocationPoints();
 
@@ -285,5 +304,27 @@ public class MapHomeActivity extends ActionBarActivity implements DBInterface.As
                 null, null, null, null, null, null, "30", this);
         loadLocationPoints();
 
+    }
+
+    /**
+     * Show dialog for chat options
+     */
+    private void showAgreementDialog() {
+        mAgreementDialog = new AgreementDialog();
+        mAgreementDialog
+                .show(AlertDialog.THEME_HOLO_LIGHT,0,R.string.agreement,R.string.agree,R.string.disagree,
+                        0,0,getSupportFragmentManager(),true,"AGREE_DIALOG","sample text");
+
+    }
+
+    @Override
+    public void onClick(DialogInterface dialog, int which) {
+
+        if(which == -1){
+            mSharedPreferences.edit().putBoolean("appOpenFirstTime", false).commit();
+        }
+        else {
+            finish();
+        }
     }
 }

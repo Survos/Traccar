@@ -61,6 +61,7 @@ public class ClientController implements Connection.ConnectionHandler {
         @Override
         public void onReceive(Context context, Intent intent) {
             StatusActivity.addMessage(context.getString(R.string.status_connectivity_change));
+            MapHomeActivity.addMessage(context.getString(R.string.status_connectivity_change));
             /*if (intent.getBooleanExtra(ConnectivityManager.EXTRA_NO_CONNECTIVITY, false)) {
                 handler.removeCallbacksAndMessages(null);
             } else {
