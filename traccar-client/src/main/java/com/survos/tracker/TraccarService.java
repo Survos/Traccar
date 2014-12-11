@@ -63,6 +63,9 @@ public class TraccarService extends Service {
 
     @Override
     public void onCreate() {
+
+
+
         StatusActivity.addMessage(getString(R.string.status_service_create));
         MapHomeActivity.addMessage(getString(R.string.status_service_create));
 
