@@ -47,7 +47,7 @@ public class TraccarService extends Service {
     public static final String LOG_TAG = "Traccar.TraccarService";
 
     private String id;
-    private String address;
+    private String address, subjectId, deviceName;
     private int port;
     private int interval;
     private int mStartHours, mStopHours;
@@ -86,7 +86,8 @@ public class TraccarService extends Service {
             mStartHours = sharedPreferences.getInt(TraccarActivity.KEY_RESTRICT_START_TIME, 0);
             mStopHours = sharedPreferences.getInt(TraccarActivity.KEY_RESTRICT_STOP_TIME, 23);
             mIsTimeRestricted = (sharedPreferences.getBoolean(TraccarActivity.KEY_RESTRICT_TIME, false));
-
+            subjectId = sharedPreferences.getString(TraccarActivity.KEY_SUBJECT_ID, "Subject Id");
+            deviceName = sharedPreferences.getString(TraccarActivity.KEY_DEVICE_NAME, "Device Name");
 
         } catch (Exception error) {
             Log.w(LOG_TAG, error);
@@ -196,7 +197,18 @@ public class TraccarService extends Service {
                     id = sharedPreferences.getString(TraccarActivity.KEY_ID, null);
                     clientController.setNewLogin(mProtocol.createLoginMessage(id));
 
+                } else if (key.equals(TraccarActivity.KEY_SUBJECT_ID)) {
+
+                    subjectId = sharedPreferences.getString(TraccarActivity.KEY_SUBJECT_ID, null);
+                    clientController.setNewServer(subjectId, port);
+
+                }else if (key.equals(TraccarActivity.KEY_DEVICE_NAME)) {
+
+                    deviceName = sharedPreferences.getString(TraccarActivity.KEY_DEVICE_NAME, null);
+                    clientController.setNewServer(deviceName, port);
+
                 }
+
             } catch (Exception error) {
                 Log.w(LOG_TAG, error);
             }

@@ -53,6 +53,8 @@ public class TraccarActivity extends PreferenceActivity implements View.OnClickL
     public static final String LOG_TAG = "traccar";
 
     public static final String KEY_ID = "id";
+    public static final String KEY_SUBJECT_ID = "subject_id";
+    public static final String KEY_DEVICE_NAME = "device_name";
     public static final String KEY_ADDRESS = "address";
     public static final String KEY_PORT = "port";
     public static final String KEY_INTERVAL = "interval";
@@ -125,6 +127,12 @@ public class TraccarActivity extends PreferenceActivity implements View.OnClickL
             } else if (key.equals(KEY_INTERVAL)) {
                 findPreference(KEY_INTERVAL).setSummary(sharedPreferences.getString(KEY_INTERVAL,
                         getResources().getString(R.string.settings_interval_summary)));
+
+            }else if (key.equals(KEY_SUBJECT_ID)) {
+                findPreference(KEY_SUBJECT_ID).setSummary(sharedPreferences.getString(KEY_SUBJECT_ID, null));
+
+            }else if (key.equals(KEY_DEVICE_NAME)) {
+                findPreference(KEY_DEVICE_NAME).setSummary(sharedPreferences.getString(KEY_DEVICE_NAME, null));
 
             }
         }
@@ -272,6 +280,12 @@ public class TraccarActivity extends PreferenceActivity implements View.OnClickL
 
         findPreference(KEY_INTERVAL).setSummary(sharedPreferences.getString(KEY_INTERVAL,
                 getResources().getString(R.string.settings_interval_summary)));
+
+        findPreference(KEY_SUBJECT_ID).setSummary(sharedPreferences.getString(KEY_SUBJECT_ID,
+                getResources().getString(R.string.settings_subject_id_summary)));
+
+        findPreference(KEY_DEVICE_NAME).setSummary(sharedPreferences.getString(KEY_DEVICE_NAME,
+                getResources().getString(R.string.settings_device_name_summary)));
 
 
         findPreference(KEY_ID).setSummary(sharedPreferences.getString(KEY_ID, id));

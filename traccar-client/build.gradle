@@ -1,8 +1,8 @@
-apply plugin: 'android'
+apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 21
-    buildToolsVersion "21.1.1"
+    buildToolsVersion "21.1.2"
 
     lintOptions {
         disable 'MissingTranslation'
@@ -11,32 +11,33 @@ android {
     defaultConfig {
         minSdkVersion 14
         targetSdkVersion 21
-        versionCode 8
-        versionName "4.6"
+        applicationId 'com.survos.telitrax'
+        versionCode 1
+        versionName "1.0"
     }
 
     buildTypes {
         debug {
-            runProguard false
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
         }
         release {
 
-            runProguard false
-            zipAlign true
+            minifyEnabled false
+            zipAlignEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
 
         }
     }
 
-    signingConfigs {
+    /*signingConfigs {
         release {
             storeFile file('/home/user/Documents/android.keystore')
             keyAlias "tananaev"
             storePassword ""
             keyPassword ""
         }
-    }
+    }*/
 
 }
 

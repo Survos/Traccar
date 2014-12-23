@@ -1,5 +1,8 @@
 package com.survos.tracker.activities;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -9,9 +12,13 @@ import android.support.v4.content.Loader;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.CompoundButton;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 
@@ -34,6 +41,7 @@ import com.survos.tracker.data.DatabaseColumns;
 import com.survos.tracker.data.Logger;
 import com.survos.tracker.data.SQLiteLoader;
 import com.survos.tracker.data.TableLocationPoints;
+import com.survos.tracker.dialogs.AgreementDialog;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -42,7 +50,7 @@ import java.util.Date;
 
 
 public class MapHomeActivity extends ActionBarActivity implements DBInterface.AsyncDbQueryCallback,
-        LoaderManager.LoaderCallbacks<Cursor>,GoogleMap.OnMapLoadedCallback {
+        LoaderManager.LoaderCallbacks<Cursor>,GoogleMap.OnMapLoadedCallback,DialogInterface.OnClickListener {
 
     //private GoogleMap mGmap;
     private Switch mSwitch;
@@ -52,16 +60,26 @@ public class MapHomeActivity extends ActionBarActivity implements DBInterface.As
 
     private static TextView mStateText;
 
+
+    /**
+     * Reference to the Dialog Fragment for selecting the chat options
+     */
+    private AgreementDialog mAgreementDialog;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map_home);
+
 
 //        if (savedInstanceState == null) {
 //            mGmap = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map)).getMap();
 //        }
 //
 //        mGmap.setOnMapLoadedCallback(this);
+
+
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
         mSwitch = (Switch) findViewById(R.id.location_switch);
@@ -70,6 +88,7 @@ public class MapHomeActivity extends ActionBarActivity implements DBInterface.As
 
         if (mSharedPreferences.getBoolean(TraccarActivity.KEY_STATUS, false)) {
             mSwitch.setChecked(true);
+            addMessage(getResources().getString(R.string.connection_active));
         } else {
             mSwitch.setChecked(false);
         }
@@ -85,6 +104,11 @@ public class MapHomeActivity extends ActionBarActivity implements DBInterface.As
                 }
             }
         });
+
+        if(mSharedPreferences.getBoolean("appOpenFirstTime",true)){
+            showAgreementDialog();
+
+        }
 
         loadLocationPoints();
 
@@ -299,5 +323,72 @@ public class MapHomeActivity extends ActionBarActivity implements DBInterface.As
                 null, null, null, null, null, null, "30", this);
         loadLocationPoints();
 
+    }
+
+    /**
+     * Show dialog for chat options
+     */
+    private void showAgreementDialog() {
+        mAgreementDialog = new AgreementDialog();
+        mAgreementDialog
+                .show(AlertDialog.THEME_HOLO_LIGHT,0,R.string.agreement,R.string.agree,R.string.disagree,
+                        0,0,getSupportFragmentManager(),true,"AGREE_DIALOG","Participants will work with the study researchers to track their location during the study period by using a smartphone app that they will download on their iPhone or Android phone. The app will need to be turned on during the entire study period. Study staff may call, text, or email you to remind you to keep the app turned on.");
+
+    }
+
+    @Override
+    public void onClick(DialogInterface dialog, int which) {
+
+        if(which == -1){
+            mSharedPreferences.edit().putBoolean("appOpenFirstTime", false).commit();
+            showSubjectIdDialog();
+        }
+        else {
+            finish();
+        }
+    }
+
+    private void showSubjectIdDialog(){
+
+        // get prompts.xml view
+        LayoutInflater li = LayoutInflater.from(MapHomeActivity.this);
+        View promptsView = li.inflate(R.layout.layout_subjectid_dialog, null);
+
+        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+
+        alert.setTitle("Subject ID");
+        //alert.setMessage("Message");
+
+        // Set an EditText view to get user input
+        /*final EditText input = new EditText(this);
+        input.setHint("Subject ID");
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.MATCH_PARENT);
+        input.setLayoutParams(lp);*/
+        alert.setView(promptsView);
+
+        final EditText input = (EditText) promptsView
+                .findViewById(R.id.editTextDialogUserInput);
+        input.setHint("Subject ID");
+
+        alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                String value = input.getText().toString();
+                // Do something with value!
+                if(!value.trim().equalsIgnoreCase("")) {
+                    SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                    pref.edit().putString("subject_id", value).commit();
+                }
+            }
+        });
+
+        alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                // Canceled.
+            }
+        });
+
+        alert.show();
     }
 }

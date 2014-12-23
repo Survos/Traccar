@@ -6,11 +6,12 @@ package com.survos.tracker.Constants;
 public class Constants {
 
     private static boolean mMainActivityIsOpen;
-
+    public static String AGREEMENT_URL = "http://logisticinfotech.net/client/TeliTax/agreement.html";
 
     public interface QueryTokens {
         //QUERY TOKENS
         public static final int QUERY_LOCATION_POINTS = 100;
+
 
         //UPDATE TOKENS
 
