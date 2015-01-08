@@ -17,7 +17,11 @@ It has the following difference:
 
 iOS app icon detail.
 
-For this 
+There is list of icon set for iOS used for different different devices.
+
+Also i have added .psd files for icon and logo.
+
+For more detail you can read here : https://developer.apple.com/library/ios/documentation/UserExperience/Conceptual/MobileHIG/IconMatrix.html
 
 
 LICENSE:
