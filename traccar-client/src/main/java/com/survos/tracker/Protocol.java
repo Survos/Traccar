@@ -115,7 +115,7 @@ public class Protocol implements DBInterface.AsyncDbQueryCallback{
         values.put(DatabaseColumns.SPEED,(l.getSpeed()*1.943844)+"");
 
         TimeZone tz = TimeZone.getTimeZone("UTC");
-        DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm'Z'");
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
         df.setTimeZone(tz);
         String nowAsISO = df.format(new Date());
 
@@ -123,7 +123,7 @@ public class Protocol implements DBInterface.AsyncDbQueryCallback{
 
         Map<String, String> map = new HashMap<String, String>();
         map.put("url", Constants.WEB_API);
-        map.put("app_name", "CHAT-Android");
+        map.put("app_name", "TeliTrax");
         map.put("name", Constants.SUBJECT_ID);
         map.put("app_version", Constants.APP_VERSION);
         map.put("code", Constants.UUID);
@@ -134,23 +134,24 @@ public class Protocol implements DBInterface.AsyncDbQueryCallback{
         map.put("altitude", ""+l.getAltitude());
         map.put("battery_percentage", ""+battery);
         map.put("speed", l.getSpeed()*1.943844+"");
-        map.put("heading", "");
+        map.put("heading", null);
         map.put("longitude", ""+l.getLongitude());
         map.put("latitude", ""+l.getLatitude());
         map.put("send_time", ""+df.format(new Date()));
         map.put("accuracy", ""+l.getAccuracy());
 //        map.put("local_time", ""+l.getAccuracy());
 
+        /*for (Map.Entry<String,String> entry : map.entrySet()) {
+            String key = entry.getKey();
+            String value = entry.getValue();
+            Log.d("divyesh "+key+"=> ",""+value);
+        }*/
+
+
         new RequestController(Constants.context,map,1);
 
         Log.d("divyesh","before for loooop");
 
-
-//        for (Map.Entry<String,String> entry : map.entrySet()) {
-//            String key = entry.getKey();
-//            String value = entry.getValue();
-//            Log.d("divyesh "+key+"=> ",""+value);
-//        }
 
 
         DBInterface.insertAsync(INSERT_LOCATION,null,null,TableLocationPoints.NAME,null,values,
