@@ -27,6 +27,7 @@ import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -36,6 +37,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.edmodo.rangebar.RangeBar;
+import com.survos.tracker.Constants.Constants;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -266,6 +268,7 @@ public class TraccarActivity extends PreferenceActivity implements View.OnClickL
 //        String id = telephonyManager.getDeviceId();
 
         String id = getPrimaryEmailAccount();
+        Log.d("divyesh", "email=>"+id);
 
         SharedPreferences sharedPreferences = getPreferenceScreen().getSharedPreferences();
 

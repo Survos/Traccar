@@ -1,7 +1,10 @@
 
 package com.survos.tracker.data;
 
+import android.content.Context;
 import android.database.Cursor;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Looper;
 import android.text.TextUtils;
@@ -221,4 +224,16 @@ public class Utils {
     }
 
 
+    public static boolean isNetworkAvailable(Context context) {
+        ConnectivityManager connectivityManager = (ConnectivityManager) context
+                .getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager
+                .getActiveNetworkInfo();
+        if (activeNetworkInfo != null && activeNetworkInfo.isConnected()) {
+            return true;
+        } else {
+//            Utils.showMessage(context, "Connection", "Please check internet connection");
+        }
+        return false;
+    }
 }

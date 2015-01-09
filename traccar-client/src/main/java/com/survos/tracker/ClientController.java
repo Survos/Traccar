@@ -23,6 +23,7 @@ import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 import com.survos.tracker.activities.MapHomeActivity;
 
@@ -117,6 +118,7 @@ public class ClientController implements Connection.ConnectionHandler {
     }
 
     public void setNewLocation(String locationMessage) {
+        Log.d("divyesh","set New Location Called");
         messageQueue.offer(locationMessage);
         if (!connection.isClosed() && !connection.isBusy()) {
             connection.send(messageQueue.poll());

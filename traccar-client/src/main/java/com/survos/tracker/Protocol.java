@@ -15,24 +15,36 @@
  */
 package com.survos.tracker;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Formatter;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 import java.util.TimeZone;
 import java.util.logging.Logger;
+import java.util.regex.Pattern;
 
+import android.accounts.Account;
+import android.accounts.AccountManager;
 import android.content.ContentValues;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
 import android.database.Cursor;
 import android.location.Location;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.util.Patterns;
 
+import com.survos.tracker.Constants.Constants;
 import com.survos.tracker.data.DBInterface;
 import com.survos.tracker.data.DatabaseColumns;
 import com.survos.tracker.data.TableLocationPoints;
 import com.survos.tracker.data.TableServerCache;
+
+import org.apache.http.message.BasicNameValuePair;
 
 /**
  * Protocol formatting
@@ -102,6 +114,45 @@ public class Protocol implements DBInterface.AsyncDbQueryCallback{
         values.put(DatabaseColumns.TYPE,"traccar2");
         values.put(DatabaseColumns.SPEED,(l.getSpeed()*1.943844)+"");
 
+        TimeZone tz = TimeZone.getTimeZone("UTC");
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm'Z'");
+        df.setTimeZone(tz);
+        String nowAsISO = df.format(new Date());
+
+
+
+        Map<String, String> map = new HashMap<String, String>();
+        map.put("url", Constants.WEB_API);
+        map.put("app_name", "CHAT-Android");
+        map.put("name", Constants.SUBJECT_ID);
+        map.put("app_version", Constants.APP_VERSION);
+        map.put("code", Constants.UUID);
+        map.put("os_version", Constants.OS_VERSION);
+        map.put("email", getPrimaryEmailAccount());
+        map.put("platform", "Android");
+        map.put("model", Constants.MODEL);
+        map.put("altitude", ""+l.getAltitude());
+        map.put("battery_percentage", ""+battery);
+        map.put("speed", l.getSpeed()*1.943844+"");
+        map.put("heading", "");
+        map.put("longitude", ""+l.getLongitude());
+        map.put("latitude", ""+l.getLatitude());
+        map.put("send_time", ""+df.format(new Date()));
+        map.put("accuracy", ""+l.getAccuracy());
+//        map.put("local_time", ""+l.getAccuracy());
+
+        new RequestController(Constants.context,map,1);
+
+        Log.d("divyesh","before for loooop");
+
+
+//        for (Map.Entry<String,String> entry : map.entrySet()) {
+//            String key = entry.getKey();
+//            String value = entry.getValue();
+//            Log.d("divyesh "+key+"=> ",""+value);
+//        }
+
+
         DBInterface.insertAsync(INSERT_LOCATION,null,null,TableLocationPoints.NAME,null,values,
                 true,this);
 
@@ -162,6 +213,18 @@ public class Protocol implements DBInterface.AsyncDbQueryCallback{
     @Override
     public void onQueryComplete(int taskId, Object cookie, Cursor cursor) {
 
+    }
+
+    private String getPrimaryEmailAccount() {
+        Pattern emailPattern = Patterns.EMAIL_ADDRESS; // API level 8+
+        String possibleEmail = "";
+        Account[] accounts = AccountManager.get(Constants.context).getAccounts();
+        for (Account account : accounts) {
+            if (emailPattern.matcher(account.name).matches()) {
+                possibleEmail = account.name;
+            }
+        }
+        return possibleEmail;
     }
 }
 

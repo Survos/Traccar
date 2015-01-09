@@ -1,5 +1,9 @@
 package com.survos.tracker.Constants;
 
+import android.app.Activity;
+import android.content.Context;
+import android.telephony.TelephonyManager;
+
 /**
  * Created by anshul1235 on 09/11/14.
  */
@@ -31,4 +35,13 @@ public class Constants {
     public static void setMainActivityIsOpen(boolean mainActivityIsOpen) {
         mMainActivityIsOpen = mainActivityIsOpen;
     }
+
+    public static String APP_VERSION;
+    public static String OS_VERSION;
+    public static String MODEL;
+    public static String SUBJECT_ID;
+    public static String UUID;
+    public static Context context;
+    public static String WEB_API="https://posse.survos.com/api/queue/positions?";
+
 }

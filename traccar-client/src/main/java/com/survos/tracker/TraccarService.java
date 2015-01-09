@@ -64,7 +64,7 @@ public class TraccarService extends Service {
     @Override
     public void onCreate() {
 
-
+        Log.d("divyesh","inside TraccarService on Create");
 
         StatusActivity.addMessage(getString(R.string.status_service_create));
         MapHomeActivity.addMessage(getString(R.string.status_service_create));
@@ -160,7 +160,8 @@ public class TraccarService extends Service {
                 MapHomeActivity.addMessage(getString(R.string.status_location_update));
 
                 clientController.setNewLocation(mProtocol.createLocationMessage( location, getBatteryLevel()));
-
+                Log.d("divyesh"," location =>"+location);
+                Log.d("divyesh"," getBatteryLevel() =>"+getBatteryLevel());
             }
         }
 

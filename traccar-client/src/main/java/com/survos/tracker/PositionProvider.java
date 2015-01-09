@@ -182,6 +182,7 @@ public class PositionProvider {
 
         @Override
         public void onStatusChanged(final String provider, int status, Bundle extras) {
+            Log.d("divyesh","location changed");
             if (status == LocationProvider.TEMPORARILY_UNAVAILABLE || status == LocationProvider.OUT_OF_SERVICE) {
                 handler.postDelayed(new Runnable() {
                     @Override

@@ -2,15 +2,19 @@ package com.survos.tracker.activities;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.preference.PreferenceManager;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -130,6 +134,20 @@ public class MapHomeActivity extends ActionBarActivity implements DBInterface.As
         super.onResume();
 
         Constants.setMainActivityIsOpen(true);
+
+        PackageInfo pInfo = null;
+        try {
+            pInfo = this.getPackageManager().getPackageInfo(getPackageName(), 0);
+            Constants.APP_VERSION = pInfo.versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        Constants.OS_VERSION = android.os.Build.VERSION.RELEASE;
+        Constants.MODEL = android.os.Build.MODEL;
+
+        TelephonyManager tManager = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
+        Constants.UUID = tManager.getDeviceId();
+        Constants.context=MapHomeActivity.this;
     }
 
     @Override
@@ -141,6 +159,7 @@ public class MapHomeActivity extends ActionBarActivity implements DBInterface.As
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_map_home, menu);
         return true;
@@ -148,6 +167,7 @@ public class MapHomeActivity extends ActionBarActivity implements DBInterface.As
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        Log.d("divyesh","on option item selected");
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
@@ -271,6 +291,7 @@ public class MapHomeActivity extends ActionBarActivity implements DBInterface.As
             for (int i = 0; i < cursor.getCount(); i++) {
 
                 if (i + 1 == cursor.getCount()) {
+                    Log.d("divyesh"," Last location updated at");
                     mLocationText.setText("Last location updated at " +
                             getDate(Long.parseLong(cursor.getString(cursor.getColumnIndex(DatabaseColumns.TIME))),
                                     "hh:mma")+"\n\nLatitude : "+cursor.getString(cursor.getColumnIndex(DatabaseColumns.LATITUDE))+"\nLongitude : "+
@@ -379,6 +400,7 @@ public class MapHomeActivity extends ActionBarActivity implements DBInterface.As
                 if(!value.trim().equalsIgnoreCase("")) {
                     SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
                     pref.edit().putString("subject_id", value).commit();
+                    Constants.SUBJECT_ID = value;
                 }
             }
         });
