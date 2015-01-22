@@ -124,7 +124,7 @@ public class Protocol implements DBInterface.AsyncDbQueryCallback{
         Map<String, String> map = new HashMap<String, String>();
         map.put("url", Constants.WEB_API);
         map.put("app_name", "TeliTrax");
-        map.put("name", Constants.SUBJECT_ID);
+        map.put("name", getCheckSumEncodedCode(Integer.parseInt(Constants.SUBJECT_ID)));
         map.put("app_version", Constants.APP_VERSION);
         map.put("code", Constants.UUID);
         map.put("os_version", Constants.OS_VERSION);
@@ -134,18 +134,18 @@ public class Protocol implements DBInterface.AsyncDbQueryCallback{
         map.put("altitude", ""+l.getAltitude());
         map.put("battery_percentage", ""+battery);
         map.put("speed", l.getSpeed()*1.943844+"");
-        map.put("heading", null);
+//        map.put("heading", null);
         map.put("longitude", ""+l.getLongitude());
         map.put("latitude", ""+l.getLatitude());
         map.put("send_time", ""+df.format(new Date()));
         map.put("accuracy", ""+l.getAccuracy());
 //        map.put("local_time", ""+l.getAccuracy());
 
-        /*for (Map.Entry<String,String> entry : map.entrySet()) {
+        for (Map.Entry<String,String> entry : map.entrySet()) {
             String key = entry.getKey();
             String value = entry.getValue();
             Log.d("divyesh "+key+"=> ",""+value);
-        }*/
+        }
 
 
         new RequestController(Constants.context,map,1);
@@ -214,6 +214,18 @@ public class Protocol implements DBInterface.AsyncDbQueryCallback{
     @Override
     public void onQueryComplete(int taskId, Object cookie, Cursor cursor) {
 
+    }
+
+    public String getCheckSumEncodedCode(int num){
+        int a = mod(98 - mod(num * 100, 97), 97);
+        Log.d("divyesh","a "+a);
+        return ""+num+a;
+    }
+
+    private int mod(int x, int y)
+    {
+        int result = x % y;
+        return result < 0? result + y : result;
     }
 
     private String getPrimaryEmailAccount() {

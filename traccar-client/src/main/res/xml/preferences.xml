@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
 
-    <EditTextPreference
+    <Preference
         android:key="id"
         android:title="@string/settings_id_title" />
 
@@ -11,27 +11,27 @@
         android:summary="@string/settings_subject_id_summary"
         android:title="@string/settings_subject_id_title" />
 
-    <EditTextPreference
-        android:defaultValue="Device Name"
-        android:key="device_name"
-        android:summary="@string/settings_device_name_summary"
-        android:title="@string/settings_device_name_title" />
+    <!--<EditTextPreference-->
+    <!--android:defaultValue="Device Name"-->
+    <!--android:key="device_name"-->
+    <!--android:summary="@string/settings_device_name_summary"-->
+    <!--android:title="@string/settings_device_name_title" />-->
 
 
-    <EditTextPreference
-        android:defaultValue="tracking.survos.com"
-        android:key="address"
-        android:summary="@string/settings_address_summary"
-        android:title="@string/settings_address_title" />
+    <!--<EditTextPreference-->
+    <!--android:defaultValue="tracking.survos.com"-->
+    <!--android:key="address"-->
+    <!--android:summary="@string/settings_address_summary"-->
+    <!--android:title="@string/settings_address_title" />-->
 
-    <EditTextPreference
-        android:defaultValue="5000"
-        android:key="port"
-        android:numeric="integer"
-        android:summary="@string/settings_port_summary"
-        android:title="@string/settings_port_title" />
+    <!--<EditTextPreference-->
+    <!--android:defaultValue="5000"-->
+    <!--android:key="port"-->
+    <!--android:numeric="integer"-->
+    <!--android:summary="@string/settings_port_summary"-->
+    <!--android:title="@string/settings_port_title" />-->
 
-    <EditTextPreference
+    <Preference
         android:defaultValue="60"
         android:key="interval"
         android:numeric="integer"
@@ -39,7 +39,7 @@
         android:title="@string/settings_interval_title" />
 
 
-    <CheckBoxPreference
+    <Preference
         android:defaultValue="false"
         android:key="time_restrict"
         android:title="@string/settings_restrict_by_time" />

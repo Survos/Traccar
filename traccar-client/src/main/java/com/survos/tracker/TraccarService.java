@@ -80,14 +80,14 @@ public class TraccarService extends Service {
 
         try {
             id = sharedPreferences.getString(TraccarActivity.KEY_ID, getPrimaryEmailAccount());
-            address = sharedPreferences.getString(TraccarActivity.KEY_ADDRESS, "tracking.survos.com");
-            port = Integer.valueOf(sharedPreferences.getString(TraccarActivity.KEY_PORT, "5000"));
+//            address = sharedPreferences.getString(TraccarActivity.KEY_ADDRESS, "tracking.survos.com");
+//            port = Integer.valueOf(sharedPreferences.getString(TraccarActivity.KEY_PORT, "5000"));
             interval = Integer.valueOf(sharedPreferences.getString(TraccarActivity.KEY_INTERVAL, "60"));
             mStartHours = sharedPreferences.getInt(TraccarActivity.KEY_RESTRICT_START_TIME, 0);
             mStopHours = sharedPreferences.getInt(TraccarActivity.KEY_RESTRICT_STOP_TIME, 23);
             mIsTimeRestricted = (sharedPreferences.getBoolean(TraccarActivity.KEY_RESTRICT_TIME, false));
             subjectId = sharedPreferences.getString(TraccarActivity.KEY_SUBJECT_ID, "Subject Id");
-            deviceName = sharedPreferences.getString(TraccarActivity.KEY_DEVICE_NAME, "Device Name");
+//            deviceName = sharedPreferences.getString(TraccarActivity.KEY_DEVICE_NAME, "Device Name");
 
         } catch (Exception error) {
             Log.w(LOG_TAG, error);
@@ -175,7 +175,7 @@ public class TraccarService extends Service {
             MapHomeActivity.addMessage(getString(R.string.status_preference_update));
 
             try {
-                if (key.equals(TraccarActivity.KEY_ADDRESS)) {
+               /* if (key.equals(TraccarActivity.KEY_ADDRESS)) {
 
                     address = sharedPreferences.getString(TraccarActivity.KEY_ADDRESS, null);
                     clientController.setNewServer(address, port);
@@ -185,7 +185,7 @@ public class TraccarService extends Service {
                     port = Integer.valueOf(sharedPreferences.getString(TraccarActivity.KEY_PORT, null));
                     clientController.setNewServer(address, port);
 
-                } else if (key.equals(TraccarActivity.KEY_INTERVAL)) {
+                } else */if (key.equals(TraccarActivity.KEY_INTERVAL)) {
 
                     interval = Integer.valueOf(sharedPreferences.getString(TraccarActivity.KEY_INTERVAL, null));
                     positionProvider.stopUpdates();
@@ -203,12 +203,12 @@ public class TraccarService extends Service {
                     subjectId = sharedPreferences.getString(TraccarActivity.KEY_SUBJECT_ID, null);
                     clientController.setNewServer(subjectId, port);
 
-                }else if (key.equals(TraccarActivity.KEY_DEVICE_NAME)) {
+                }/*else if (key.equals(TraccarActivity.KEY_DEVICE_NAME)) {
 
                     deviceName = sharedPreferences.getString(TraccarActivity.KEY_DEVICE_NAME, null);
                     clientController.setNewServer(deviceName, port);
 
-                }
+                }*/
 
             } catch (Exception error) {
                 Log.w(LOG_TAG, error);

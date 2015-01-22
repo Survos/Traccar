@@ -165,9 +165,16 @@ public class MapHomeActivity extends ActionBarActivity implements DBInterface.As
         return true;
     }
 
+    private int mod(int x, int y)
+    {
+        int result = x % y;
+        return result < 0? result + y : result;
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         Log.d("divyesh","on option item selected");
+
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.

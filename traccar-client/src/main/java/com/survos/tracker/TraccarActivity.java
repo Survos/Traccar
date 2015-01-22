@@ -56,9 +56,9 @@ public class TraccarActivity extends PreferenceActivity implements View.OnClickL
 
     public static final String KEY_ID = "id";
     public static final String KEY_SUBJECT_ID = "subject_id";
-    public static final String KEY_DEVICE_NAME = "device_name";
-    public static final String KEY_ADDRESS = "address";
-    public static final String KEY_PORT = "port";
+//    public static final String KEY_DEVICE_NAME = "device_name";
+//    public static final String KEY_ADDRESS = "address";
+//    public static final String KEY_PORT = "port";
     public static final String KEY_INTERVAL = "interval";
     public static final String KEY_STATUS = "status";
     public static final String KEY_RESTRICT_TIME = "time_restrict";
@@ -111,8 +111,8 @@ public class TraccarActivity extends PreferenceActivity implements View.OnClickL
                 }
             } else if (key.equals(KEY_ID)) {
                 findPreference(KEY_ID).setSummary(sharedPreferences.getString(KEY_ID, null));
-            } else if (key.equals(KEY_ADDRESS)) {
-                findPreference(KEY_ADDRESS).setSummary(sharedPreferences.getString(KEY_ADDRESS, null));
+//            } else if (key.equals(KEY_ADDRESS)) {
+//                findPreference(KEY_ADDRESS).setSummary(sharedPreferences.getString(KEY_ADDRESS, null));
 
             } else if (key.equals(KEY_RESTRICT_TIME)) {
                 if (!sharedPreferences.getBoolean(KEY_RESTRICT_TIME, false)) {
@@ -121,10 +121,10 @@ public class TraccarActivity extends PreferenceActivity implements View.OnClickL
                 } else {
                     openSelectRestrictTimeDialog();
                 }
-            } else if (key.equals(KEY_PORT)) {
-
-                findPreference(KEY_PORT).setSummary(sharedPreferences.getString(KEY_PORT,
-                        getResources().getString(R.string.settings_port_summary)));
+//            } else if (key.equals(KEY_PORT)) {
+//
+//                findPreference(KEY_PORT).setSummary(sharedPreferences.getString(KEY_PORT,
+//                        getResources().getString(R.string.settings_port_summary)));
 
             } else if (key.equals(KEY_INTERVAL)) {
                 findPreference(KEY_INTERVAL).setSummary(sharedPreferences.getString(KEY_INTERVAL,
@@ -133,10 +133,10 @@ public class TraccarActivity extends PreferenceActivity implements View.OnClickL
             }else if (key.equals(KEY_SUBJECT_ID)) {
                 findPreference(KEY_SUBJECT_ID).setSummary(sharedPreferences.getString(KEY_SUBJECT_ID, null));
 
-            }else if (key.equals(KEY_DEVICE_NAME)) {
-                findPreference(KEY_DEVICE_NAME).setSummary(sharedPreferences.getString(KEY_DEVICE_NAME, null));
+            }/*else if (key.equals(KEY_DEVICE_NAME)) {
+//                findPreference(KEY_DEVICE_NAME).setSummary(sharedPreferences.getString(KEY_DEVICE_NAME, null));
 
-            }
+            }*/
         }
     };
 
@@ -276,10 +276,10 @@ public class TraccarActivity extends PreferenceActivity implements View.OnClickL
             sharedPreferences.edit().putString(KEY_ID, id).commit();
         }
 
-        String serverAddress = sharedPreferences.getString(KEY_ADDRESS, getResources().getString(R.string.settings_address_summary));
-
-        findPreference(KEY_PORT).setSummary(sharedPreferences.getString(KEY_PORT,
-                getResources().getString(R.string.settings_port_summary)));
+//        String serverAddress = sharedPreferences.getString(KEY_ADDRESS, getResources().getString(R.string.settings_address_summary));
+//
+//        findPreference(KEY_PORT).setSummary(sharedPreferences.getString(KEY_PORT,
+//                getResources().getString(R.string.settings_port_summary)));
 
         findPreference(KEY_INTERVAL).setSummary(sharedPreferences.getString(KEY_INTERVAL,
                 getResources().getString(R.string.settings_interval_summary)));
@@ -287,12 +287,12 @@ public class TraccarActivity extends PreferenceActivity implements View.OnClickL
         findPreference(KEY_SUBJECT_ID).setSummary(sharedPreferences.getString(KEY_SUBJECT_ID,
                 getResources().getString(R.string.settings_subject_id_summary)));
 
-        findPreference(KEY_DEVICE_NAME).setSummary(sharedPreferences.getString(KEY_DEVICE_NAME,
-                getResources().getString(R.string.settings_device_name_summary)));
+//        findPreference(KEY_DEVICE_NAME).setSummary(sharedPreferences.getString(KEY_DEVICE_NAME,
+//                getResources().getString(R.string.settings_device_name_summary)));
 
 
         findPreference(KEY_ID).setSummary(sharedPreferences.getString(KEY_ID, id));
-        findPreference(KEY_ADDRESS).setSummary(sharedPreferences.getString(KEY_ADDRESS, serverAddress));
+//        findPreference(KEY_ADDRESS).setSummary(sharedPreferences.getString(KEY_ADDRESS, serverAddress));
 
         if (sharedPreferences.getBoolean(KEY_RESTRICT_TIME, false)) {
             int startTime = sharedPreferences.getInt(KEY_RESTRICT_START_TIME, 0);
