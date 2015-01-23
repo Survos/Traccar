@@ -5,6 +5,14 @@
         android:key="id"
         android:title="@string/settings_id_title" />
 
+    <Preference
+        android:defaultValue="0"
+        android:key="mobilenumber"
+        android:numeric="integer"
+        android:summary="Mobile Number"
+        android:title="Mobile Number" />
+
+
     <EditTextPreference
         android:defaultValue="Subject ID"
         android:key="subject_id"

@@ -15,6 +15,7 @@ import android.support.v4.content.Loader;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.telephony.TelephonyManager;
+import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -163,12 +164,6 @@ public class MapHomeActivity extends ActionBarActivity implements DBInterface.As
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_map_home, menu);
         return true;
-    }
-
-    private int mod(int x, int y)
-    {
-        int result = x % y;
-        return result < 0? result + y : result;
     }
 
     @Override
@@ -369,6 +364,15 @@ public class MapHomeActivity extends ActionBarActivity implements DBInterface.As
 
         if(which == -1){
             mSharedPreferences.edit().putBoolean("appOpenFirstTime", false).commit();
+            TelephonyManager tMgr = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
+            Log.d("divyesh","here "+tMgr.getLine1Number());
+            if(tMgr.getLine1Number()==null || tMgr.getLine1Number().equalsIgnoreCase(""))
+                showMobileNumberDialog();
+            else
+            {
+                SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                pref.edit().putString("mobilenumber", tMgr.getLine1Number()).commit();
+            }
             showSubjectIdDialog();
         }
         else {
@@ -399,15 +403,20 @@ public class MapHomeActivity extends ActionBarActivity implements DBInterface.As
         final EditText input = (EditText) promptsView
                 .findViewById(R.id.editTextDialogUserInput);
         input.setHint("Subject ID");
+        input.setInputType(InputType.TYPE_CLASS_NUMBER);
 
         alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
                 String value = input.getText().toString();
                 // Do something with value!
                 if(!value.trim().equalsIgnoreCase("")) {
-                    SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-                    pref.edit().putString("subject_id", value).commit();
-                    Constants.SUBJECT_ID = value;
+                    if(validateSubjectID(Integer.parseInt(value))) {
+                        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                        pref.edit().putString("subject_id", value).commit();
+                        Constants.SUBJECT_ID = value;
+                    }
+                    else
+                        showSubjectIdDialog();
                 }
             }
         });
@@ -419,5 +428,66 @@ public class MapHomeActivity extends ActionBarActivity implements DBInterface.As
         });
 
         alert.show();
+    }
+
+    private void showMobileNumberDialog(){
+
+        // get prompts.xml view
+        LayoutInflater li = LayoutInflater.from(MapHomeActivity.this);
+        View promptsView = li.inflate(R.layout.layout_subjectid_dialog, null);
+
+        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+
+        alert.setTitle("Mobile Number");
+        //alert.setMessage("Message");
+
+        // Set an EditText view to get user input
+        /*final EditText input = new EditText(this);
+        input.setHint("Subject ID");
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.MATCH_PARENT);
+        input.setLayoutParams(lp);*/
+        alert.setView(promptsView);
+
+        final EditText input = (EditText) promptsView
+                .findViewById(R.id.editTextDialogUserInput);
+        input.setHint("Mobile Number");
+
+        alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                String value = input.getText().toString();
+                // Do something with value!
+                if(!value.trim().equalsIgnoreCase("")) {
+                    SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                    pref.edit().putString("mobilenumber", value).commit();
+                }
+            }
+        });
+
+        alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                // Canceled.
+            }
+        });
+
+        alert.show();
+    }
+
+    public boolean validateSubjectID(int num){
+        int a = mod(98 - mod(num * 100, 97), 97);
+        int code = Integer.parseInt(""+num+a);
+        Log.d("divyesh","validation =>"+mod(code,97));
+
+        if(mod(code,97)==1)
+            return true;
+        else
+            return false;
+    }
+
+    private int mod(int x, int y)
+    {
+        int result = x % y;
+        return result < 0? result + y : result;
     }
 }

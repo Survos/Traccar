@@ -27,6 +27,7 @@ import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.Menu;
@@ -281,8 +282,11 @@ public class TraccarActivity extends PreferenceActivity implements View.OnClickL
 //        findPreference(KEY_PORT).setSummary(sharedPreferences.getString(KEY_PORT,
 //                getResources().getString(R.string.settings_port_summary)));
 
-        findPreference(KEY_INTERVAL).setSummary(sharedPreferences.getString(KEY_INTERVAL,
-                getResources().getString(R.string.settings_interval_summary)));
+      /*  findPreference(KEY_INTERVAL).setSummary(sharedPreferences.getString(KEY_INTERVAL,
+                getResources().getString(R.string.settings_interval_summary)));*/
+        findPreference(KEY_INTERVAL).setSummary(sharedPreferences.getString(KEY_INTERVAL,""+60));
+
+        findPreference("mobilenumber").setSummary(sharedPreferences.getString("mobilenumber",sharedPreferences.getString("mobilenumber","")));
 
         findPreference(KEY_SUBJECT_ID).setSummary(sharedPreferences.getString(KEY_SUBJECT_ID,
                 getResources().getString(R.string.settings_subject_id_summary)));
@@ -313,7 +317,8 @@ public class TraccarActivity extends PreferenceActivity implements View.OnClickL
 
             findPreference(KEY_RESTRICT_TIME).setSummary(startString + " - " + stopString);
         } else {
-            findPreference(KEY_RESTRICT_TIME).setSummary(getResources().getString(R.string.select_time_interval));
+//            findPreference(KEY_RESTRICT_TIME).setSummary(getResources().getString(R.string.select_time_interval));
+            findPreference(KEY_RESTRICT_TIME).setSummary("12:00am - 11:59pm");
         }
 
 

@@ -6,49 +6,49 @@
         jumboMode="false"
         revision="21.1.2"
         sha1="1609e6d42d0480b0f4188e2c29f75388fa12a8f0">
-        <dex dex="/Users/divyesh/Desktop/Traccar 2/traccar-client/build/intermediates/pre-dexed/debug/internal_impl-21.0.0-66b45c0a7eabfd3420d730096664aaefd7ae9187.jar" />
+        <dex dex="/Users/divyesh/Desktop/Traccar 2/traccar-client/build/intermediates/pre-dexed/release/internal_impl-21.0.0-66b45c0a7eabfd3420d730096664aaefd7ae9187.jar" />
     </item>
     <item
         jar="/Users/divyesh/Desktop/Traccar 2/traccar-client/build/intermediates/exploded-aar/com.google.android.gms/play-services/6.1.11/classes.jar"
         jumboMode="false"
         revision="21.1.2"
         sha1="0f700f6802ba1a1f1fa7ac26d5db0666a89d75a6">
-        <dex dex="/Users/divyesh/Desktop/Traccar 2/traccar-client/build/intermediates/pre-dexed/debug/classes-2dd610fff7fdd8f13251102438dbea2e434474a2.jar" />
+        <dex dex="/Users/divyesh/Desktop/Traccar 2/traccar-client/build/intermediates/pre-dexed/release/classes-2dd610fff7fdd8f13251102438dbea2e434474a2.jar" />
     </item>
     <item
         jar="/Users/divyesh/Desktop/Traccar 2/traccar-client/build/intermediates/exploded-aar/com.edmodo/rangebar/1.0.0/classes.jar"
         jumboMode="false"
         revision="21.1.2"
         sha1="b935227af51c2df70e2be2cbfc5872ff2d726ed5">
-        <dex dex="/Users/divyesh/Desktop/Traccar 2/traccar-client/build/intermediates/pre-dexed/debug/classes-e5f12d706592cd663f00337428ec0a90e941a453.jar" />
+        <dex dex="/Users/divyesh/Desktop/Traccar 2/traccar-client/build/intermediates/pre-dexed/release/classes-e5f12d706592cd663f00337428ec0a90e941a453.jar" />
     </item>
     <item
         jar="/Users/divyesh/Desktop/Traccar 2/traccar-client/build/intermediates/exploded-aar/com.android.support/cardview-v7/21.0.0/classes.jar"
         jumboMode="false"
         revision="21.1.2"
         sha1="7d2525cba8ed61fff102977caed964fc22061e34">
-        <dex dex="/Users/divyesh/Desktop/Traccar 2/traccar-client/build/intermediates/pre-dexed/debug/classes-5c1c4e20bae45017e4ba2afbb1c77c0c7423b5c6.jar" />
+        <dex dex="/Users/divyesh/Desktop/Traccar 2/traccar-client/build/intermediates/pre-dexed/release/classes-5c1c4e20bae45017e4ba2afbb1c77c0c7423b5c6.jar" />
     </item>
     <item
         jar="/Users/divyesh/Desktop/Traccar 2/traccar-client/build/intermediates/exploded-aar/com.android.support/support-v4/21.0.0/classes.jar"
         jumboMode="false"
         revision="21.1.2"
         sha1="686344a780033e4ba22b926cd225f8d4941247e6">
-        <dex dex="/Users/divyesh/Desktop/Traccar 2/traccar-client/build/intermediates/pre-dexed/debug/classes-96edcba964f4bededfa7b22250716fe8324f8878.jar" />
+        <dex dex="/Users/divyesh/Desktop/Traccar 2/traccar-client/build/intermediates/pre-dexed/release/classes-96edcba964f4bededfa7b22250716fe8324f8878.jar" />
     </item>
     <item
         jar="/Users/divyesh/Desktop/Traccar 2/traccar-client/build/intermediates/exploded-aar/com.android.support/appcompat-v7/21.0.0/classes.jar"
         jumboMode="false"
         revision="21.1.2"
         sha1="95fd37732ec852e99f07eeb516a3650172f1d136">
-        <dex dex="/Users/divyesh/Desktop/Traccar 2/traccar-client/build/intermediates/pre-dexed/debug/classes-ff7b7be690049ba4c2f9cfa25961f9743b4565bd.jar" />
+        <dex dex="/Users/divyesh/Desktop/Traccar 2/traccar-client/build/intermediates/pre-dexed/release/classes-ff7b7be690049ba4c2f9cfa25961f9743b4565bd.jar" />
     </item>
     <item
         jar="/Volumes/Projects/android-sdk-macosx updated/extras/android/m2repository/com/android/support/support-annotations/21.0.0/support-annotations-21.0.0.jar"
         jumboMode="false"
         revision="21.1.2"
         sha1="1a578b9607b36266c63d43a4fa0ab5664dbe911e">
-        <dex dex="/Users/divyesh/Desktop/Traccar 2/traccar-client/build/intermediates/pre-dexed/debug/support-annotations-21.0.0-f8866b8fe271fda555b6b28b080db0278ca8bc9a.jar" />
+        <dex dex="/Users/divyesh/Desktop/Traccar 2/traccar-client/build/intermediates/pre-dexed/release/support-annotations-21.0.0-f8866b8fe271fda555b6b28b080db0278ca8bc9a.jar" />
     </item>
 
 </items>
