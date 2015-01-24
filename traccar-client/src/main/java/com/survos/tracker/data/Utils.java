@@ -236,4 +236,12 @@ public class Utils {
         }
         return false;
     }
+
+    public static boolean validateSubjectID(int num)
+    {
+        if(num%2==0)
+            return false;
+        else
+            return true;
+    }
 }

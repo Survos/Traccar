@@ -47,6 +47,7 @@ import com.survos.tracker.data.DatabaseColumns;
 import com.survos.tracker.data.Logger;
 import com.survos.tracker.data.SQLiteLoader;
 import com.survos.tracker.data.TableLocationPoints;
+import com.survos.tracker.data.Utils;
 import com.survos.tracker.dialogs.AgreementDialog;
 
 import java.text.DateFormat;
@@ -84,7 +85,11 @@ public class MapHomeActivity extends ActionBarActivity implements DBInterface.As
 //        }
 //
 //        mGmap.setOnMapLoadedCallback(this);
-
+        TextView title = (TextView) findViewById(R.id.title);
+        try {
+            title.setText(title.getText() + " " + getPackageManager().getPackageInfo(this.getPackageName(), 0).versionName);
+        } catch (PackageManager.NameNotFoundException e) {
+        }
 
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
@@ -403,8 +408,8 @@ public class MapHomeActivity extends ActionBarActivity implements DBInterface.As
 
         final EditText input = (EditText) promptsView
                 .findViewById(R.id.editTextDialogUserInput);
-//        int maxLength = 9;
-//        input.setFilters(new InputFilter[] {new InputFilter.LengthFilter(maxLength)});
+        int maxLength = 9;
+        input.setFilters(new InputFilter[] {new InputFilter.LengthFilter(maxLength)});
         input.setHint(msg);
         input.setInputType(InputType.TYPE_CLASS_NUMBER);
 
@@ -413,7 +418,7 @@ public class MapHomeActivity extends ActionBarActivity implements DBInterface.As
                 String value = input.getText().toString();
                 // Do something with value!
                 if(!value.trim().equalsIgnoreCase("")) {
-                    if(validateSubjectID(value)){
+                    if(Utils.validateSubjectID(Integer.parseInt(value))){
                         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
                         pref.edit().putString("subject_id", value).commit();
                         Constants.SUBJECT_ID = value;
@@ -435,13 +440,6 @@ public class MapHomeActivity extends ActionBarActivity implements DBInterface.As
         alert.show();
     }
 
-    public boolean validateSubjectID(String num)
-    {
-        if(num.length()%2==0)
-            return true;
-        else
-            return false;
-    }
     private void showMobileNumberDialog(){
 
         // get prompts.xml view

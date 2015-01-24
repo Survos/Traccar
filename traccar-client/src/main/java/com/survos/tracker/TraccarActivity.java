@@ -25,8 +25,10 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.os.Bundle;
+import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
+import android.preference.PreferenceScreen;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.util.Patterns;
@@ -36,9 +38,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.edmodo.rangebar.RangeBar;
 import com.survos.tracker.Constants.Constants;
+import com.survos.tracker.data.Utils;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -66,6 +70,7 @@ public class TraccarActivity extends PreferenceActivity implements View.OnClickL
     public static final String KEY_RESTRICT_START_TIME = "restrict_start_time";
     public static final String KEY_RESTRICT_STOP_TIME = "restrict_stop_time";
 
+    String oldVal;
     /**
      * holds the dialog for selecting time range
      */
@@ -83,6 +88,7 @@ public class TraccarActivity extends PreferenceActivity implements View.OnClickL
         mSharedPreferences = getPreferenceScreen().getSharedPreferences();
 
         initPreferences();
+        oldVal = mSharedPreferences.getString(KEY_SUBJECT_ID, null);
         if (mSharedPreferences.getBoolean(KEY_STATUS, false))
             startService(new Intent(this, TraccarService.class));
     }
@@ -103,7 +109,7 @@ public class TraccarActivity extends PreferenceActivity implements View.OnClickL
 
     OnSharedPreferenceChangeListener preferenceChangeListener = new OnSharedPreferenceChangeListener() {
         @Override
-        public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        public void onSharedPreferenceChanged(final SharedPreferences sharedPreferences, String key) {
             if (key.equals(KEY_STATUS)) {
                 if (sharedPreferences.getBoolean(KEY_STATUS, false)) {
                     startService(new Intent(TraccarActivity.this, TraccarService.class));
@@ -132,7 +138,29 @@ public class TraccarActivity extends PreferenceActivity implements View.OnClickL
                         getResources().getString(R.string.settings_interval_summary)));
 
             }else if (key.equals(KEY_SUBJECT_ID)) {
-                findPreference(KEY_SUBJECT_ID).setSummary(sharedPreferences.getString(KEY_SUBJECT_ID, null));
+                Log.d("aaa","new val =>"+sharedPreferences.getString(KEY_SUBJECT_ID, null)+" and old=>"+oldVal);
+                if(Utils.validateSubjectID(Integer.parseInt(sharedPreferences.getString(KEY_SUBJECT_ID, null)))) {
+                    Log.d("aaa", "inside if");
+                    findPreference(KEY_SUBJECT_ID).setSummary(sharedPreferences.getString(KEY_SUBJECT_ID, null));
+                }
+                else
+                {
+                    Log.d("aaa","inside else");
+                    sharedPreferences.edit().putString(KEY_SUBJECT_ID, oldVal).commit();
+                    PreferenceScreen screen = (PreferenceScreen) findPreference("preferencescreen");
+                    screen.onItemClick( null, null, 2, 0 );
+                    screen.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+                        @Override
+                        public boolean onPreferenceChange(Preference preference, Object newValue) {
+                            Log.d("aaa","preference change");
+                            if(Utils.validateSubjectID(Integer.parseInt(sharedPreferences.getString(KEY_SUBJECT_ID, null))))
+                                 findPreference(KEY_SUBJECT_ID).setSummary(sharedPreferences.getString(KEY_SUBJECT_ID, null));
+                            return false;
+                        }
+                    });
+                    Toast.makeText(TraccarActivity.this,"Enter Valid SubjectId",Toast.LENGTH_SHORT).show();
+                }
+
 
             }/*else if (key.equals(KEY_DEVICE_NAME)) {
 //                findPreference(KEY_DEVICE_NAME).setSummary(sharedPreferences.getString(KEY_DEVICE_NAME, null));
