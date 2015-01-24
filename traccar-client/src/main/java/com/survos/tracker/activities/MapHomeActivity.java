@@ -15,6 +15,7 @@ import android.support.v4.content.Loader;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.telephony.TelephonyManager;
+import android.text.InputFilter;
 import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -64,7 +65,7 @@ public class MapHomeActivity extends ActionBarActivity implements DBInterface.As
     private TextView mLocationText;
 
     private static TextView mStateText;
-
+    String msg="Subject ID";
 
     /**
      * Reference to the Dialog Fragment for selecting the chat options
@@ -402,7 +403,9 @@ public class MapHomeActivity extends ActionBarActivity implements DBInterface.As
 
         final EditText input = (EditText) promptsView
                 .findViewById(R.id.editTextDialogUserInput);
-        input.setHint("Subject ID");
+//        int maxLength = 9;
+//        input.setFilters(new InputFilter[] {new InputFilter.LengthFilter(maxLength)});
+        input.setHint(msg);
         input.setInputType(InputType.TYPE_CLASS_NUMBER);
 
         alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -410,13 +413,15 @@ public class MapHomeActivity extends ActionBarActivity implements DBInterface.As
                 String value = input.getText().toString();
                 // Do something with value!
                 if(!value.trim().equalsIgnoreCase("")) {
-                    if(validateSubjectID(Integer.parseInt(value))) {
+                    if(validateSubjectID(value)){
                         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
                         pref.edit().putString("subject_id", value).commit();
                         Constants.SUBJECT_ID = value;
                     }
-                    else
+                    else {
+                        msg ="Enter Valid SubjectId";
                         showSubjectIdDialog();
+                    }
                 }
             }
         });
@@ -430,6 +435,13 @@ public class MapHomeActivity extends ActionBarActivity implements DBInterface.As
         alert.show();
     }
 
+    public boolean validateSubjectID(String num)
+    {
+        if(num.length()%2==0)
+            return true;
+        else
+            return false;
+    }
     private void showMobileNumberDialog(){
 
         // get prompts.xml view
@@ -474,20 +486,4 @@ public class MapHomeActivity extends ActionBarActivity implements DBInterface.As
         alert.show();
     }
 
-    public boolean validateSubjectID(int num){
-        int a = mod(98 - mod(num * 100, 97), 97);
-        int code = Integer.parseInt(""+num+a);
-        Log.d("divyesh","validation =>"+mod(code,97));
-
-        if(mod(code,97)==1)
-            return true;
-        else
-            return false;
-    }
-
-    private int mod(int x, int y)
-    {
-        int result = x % y;
-        return result < 0? result + y : result;
-    }
 }
