@@ -1,0 +1,65 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1265\cocoasubrtf210
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;\f1\froman\fcharset0 Times-Roman;}
+{\colortbl;\red255\green255\blue255;\red0\green0\blue233;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww11620\viewh12000\viewkind0
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural
+
+\f0\fs24 \cf0 TeliTrax Development over view\
+\
+\
+Environment set up :\
+\
+For that you can read here in detail : https://developer.android.com/sdk/installing/index.html\
+\
+Publishing app Follow below links \
+\
+\pard\pardeftab720
+{\field{\*\fldinst{HYPERLINK "http://www.google.com/url?q=http%3A%2F%2Fforumone.com%2Finsights%2Fhow-publish-your-mobile-app-google-play-and-apple-app-stores%2F&sa=D&sntz=1&usg=AFQjCNEA_F05kgWzVdYyZJzj21FeOVG2IA"}}{\fldrslt 
+\f1 \cf2 \ul \ulc2 \uc0\u8234 http://forumone.com/insights/how-publish-your-mobile-app-google-play-and-apple-app-stores/}}
+\f1 \
+\
+\pard\pardeftab720
+{\field{\*\fldinst{HYPERLINK "http://www.google.com/url?q=http%3A%2F%2Fdeveloper.xamarin.com%2Fguides%2Fandroid%2Fdeployment%2C_testing%2C_and_metrics%2Fpublishing_an_application%2Fpart_2_-_publishing_an_application_on_google_play%2F&sa=D&sntz=1&usg=AFQjCNGerDyVemy5x8PiNBhJkZ5jKXDC0A"}}{\fldrslt \cf2 \ul \ulc2 \uc0\u8234 http://developer.xamarin.com/guides/android/deployment,_testing,_and_metrics/publishing_an_application/part_2_-_publishing_an_application_on_google_play/}}\cf2 \ul \ulc2 \
+\
+\
+\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural
+
+\f0 \cf0 \ulnone Updating version number for app and uploading newer version to playstore.\
+\
+Open Projects in Android Studio.\
+\
+Then open file named as \'93build.gradle\'94 file in side \'93\'94Traccar-client folder\
+\
+Change version number and code you want to upload \
+\
+defaultConfig \{\
+        minSdkVersion 14\
+        targetSdkVersion 21\
+        applicationId 'com.survos.telitrax'\
+        versionCode 1\
+        versionName "1.0"\
+    \}\
+\
+\
+Don\'92r forgot to save file before building new api.\
+\
+Now Select Build from Top menu. \
+\
+from that selected \'93Generate Signed APK\'94\
+\
+You will see pop up like this : http://cl.ly/image/3Y1J1G2I1y0R\
+\
+Then flow like this : http://cl.ly/image/1r1X0V0c3W3w\
+\
+Select keystone file telitrax.jks and its password set to 123456\
+\
+You will see pop up like this : http://cl.ly/image/1r2C3o1q0H3f\
+\
+Wait it here for few min it will take time to generate apk.\
+\
+You will see pop up like this : http://cl.ly/image/420I182I3F1h\
+\
+Lets get apk from that and upload it to playstore.\
+\
+Follow same for next version update.}
